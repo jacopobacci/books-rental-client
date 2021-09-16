@@ -1,26 +1,39 @@
 import NavigationBar from "../components/NavigationBar";
 import { Form, Button, Row, Container, Col } from "react-bootstrap";
-import { useState } from "react";
+import { useContext } from "react";
 import { useRouter } from "next/router";
+import { AuthContext } from "../shared/context/auth-context";
 
 const register = () => {
   const router = useRouter();
+  const auth = useContext(AuthContext);
 
   const registerUser = async (evt) => {
     evt.preventDefault();
 
-    await fetch(`http://localhost:3001/api/users`, {
-      body: JSON.stringify({
-        firstName: evt.target.firstName.value,
-        lastName: evt.target.lastName.value,
-        email: evt.target.email.value,
-        password: evt.target.password.value,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-    });
+    try {
+      const res = await fetch(`http://localhost:3001/api/users`, {
+        body: JSON.stringify({
+          firstName: evt.target.firstName.value,
+          lastName: evt.target.lastName.value,
+          email: evt.target.email.value,
+          password: evt.target.password.value,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+
+      const result = await res.json();
+      const { userId, token } = result;
+
+      auth.login(userId, token);
+
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

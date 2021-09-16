@@ -31,7 +31,6 @@ const login = () => {
       const json = jwt.decode(token);
       const { firstName, lastName, userId } = json;
       auth.login(userId, token);
-      console.log(userId);
       setMessage(`Welcome ${firstName} ${lastName}`);
     } else {
       setMessage("Something went wrong");
