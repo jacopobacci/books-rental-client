@@ -2,8 +2,10 @@ import { Form, Button, Row, Container, Col } from "react-bootstrap";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useContext } from "react";
+import { useRouter } from "next/router";
 
 const create = () => {
+  const router = useRouter();
   const auth = useContext(AuthContext);
 
   const createGenre = async (evt) => {
@@ -20,6 +22,7 @@ const create = () => {
         },
         method: "POST",
       });
+      router.push("/genres");
     } catch (error) {
       console.log(error);
     }
