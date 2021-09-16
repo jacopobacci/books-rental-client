@@ -9,28 +9,33 @@ const NavigationBar = () => {
   return (
     <Navbar bg="light" expand="lg" className="mb-5">
       <Container>
-        <Navbar.Brand href="#home">Books Rental</Navbar.Brand>
+        <Link href="/">
+          <Navbar.Brand href="/">Books Rental</Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Link href="/">
-              <a>Home</a>
-            </Link>
             {auth.isLoggedIn ? (
-              <button onClick={auth.logout}>Logout</button>
+              <button className="btn btn-danger" onClick={auth.logout}>
+                Logout
+              </button>
             ) : (
               <>
                 <Link href="/login">
-                  <a>Login</a>
+                  <Nav.Link href="/login">Login</Nav.Link>
                 </Link>
                 <Link href="/register">
-                  <a>Register</a>
+                  <Nav.Link href="/register">Register</Nav.Link>
                 </Link>
               </>
             )}
             <NavDropdown title="Genres" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/genres">All genres</NavDropdown.Item>
-              <NavDropdown.Item href="/genres/create">Create Genre</NavDropdown.Item>
+              <Link href="/genres">
+                <NavDropdown.Item href="/genres">All genres</NavDropdown.Item>
+              </Link>
+              <Link href="/genres/create">
+                <NavDropdown.Item href="/genres/create">Create Genre</NavDropdown.Item>
+              </Link>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
