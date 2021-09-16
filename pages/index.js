@@ -1,5 +1,4 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import NavigationBar from "../components/NavigationBar";
 import HomePage from "../components/HomePage";
 

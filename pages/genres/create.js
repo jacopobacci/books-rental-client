@@ -3,10 +3,16 @@ import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useContext } from "react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const create = () => {
   const router = useRouter();
   const auth = useContext(AuthContext);
+  const { isLoggedIn } = auth;
+
+  useEffect(() => {
+    if (!isLoggedIn) router.push("/login");
+  }, []);
 
   const createGenre = async (evt) => {
     evt.preventDefault();

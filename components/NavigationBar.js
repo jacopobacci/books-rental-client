@@ -5,6 +5,7 @@ import { useContext } from "react";
 
 const NavigationBar = () => {
   const auth = useContext(AuthContext);
+  const { isLoggedIn } = auth;
 
   return (
     <Navbar bg="light" expand="lg" className="mb-5">
@@ -15,7 +16,7 @@ const NavigationBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {auth.isLoggedIn ? (
+            {isLoggedIn ? (
               <button className="btn btn-danger" onClick={auth.logout}>
                 Logout
               </button>

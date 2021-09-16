@@ -7,8 +7,8 @@ function MyApp({ Component, pageProps }) {
   const { token, login, logout, userId } = useAuth();
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn: !!token, token, login, logout }}>
-      <Component {...pageProps} />;
+    <AuthContext.Provider value={{ isLoggedIn: !!token, token, login, logout, userId }}>
+      <Component {...pageProps} />
     </AuthContext.Provider>
   );
 }
