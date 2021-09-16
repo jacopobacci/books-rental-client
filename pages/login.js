@@ -3,6 +3,8 @@ import Link from "next/link";
 import NavigationBar from "../components/NavigationBar";
 import jwt from "jsonwebtoken";
 import { useState } from "react";
+import { AuthContext } from "../shared/context/auth-context";
+import { useContext } from "react";
 
 const login = () => {
   const [message, setMessage] = useState("");
@@ -28,11 +30,12 @@ const login = () => {
     if (token) {
       const json = jwt.decode(token);
       const { firstName, lastName, userId } = json;
+      auth.login(userId, token);
+      console.log(userId);
       setMessage(`Welcome ${firstName} ${lastName}`);
     } else {
       setMessage("Something went wrong");
     }
-    console.log(result);
   };
 
   return (

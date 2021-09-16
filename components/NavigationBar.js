@@ -1,7 +1,11 @@
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import Link from "next/link";
+import { AuthContext } from "../shared/context/auth-context";
+import { useContext } from "react";
 
 const NavigationBar = () => {
+  const auth = useContext(AuthContext);
+
   return (
     <Navbar bg="light" expand="lg" className="mb-5">
       <Container>
@@ -12,12 +16,18 @@ const NavigationBar = () => {
             <Link href="/">
               <a>Home</a>
             </Link>
-            <Link href="/login">
-              <a>Login</a>
-            </Link>
-            <Link href="/register">
-              <a>Register</a>
-            </Link>
+            {auth.isLoggedIn ? (
+              <button onClick={auth.logout}>Logout</button>
+            ) : (
+              <>
+                <Link href="/login">
+                  <a>Login</a>
+                </Link>
+                <Link href="/register">
+                  <a>Register</a>
+                </Link>
+              </>
+            )}
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
