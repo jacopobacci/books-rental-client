@@ -9,7 +9,7 @@ const NavigationBar = () => {
   const { isLoggedIn } = auth;
 
   return (
-    <Navbar bg="light" expand="lg" className="mb-5">
+    <Navbar bg="light" expand="lg" className="mb-5 py-3">
       <Container>
         <Link href="/">
           <Navbar.Brand href="/">Books Rental</Navbar.Brand>

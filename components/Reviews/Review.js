@@ -1,5 +1,5 @@
 import React from "react";
-import { ProgressBar, Row, Col } from "react-bootstrap";
+import { ProgressBar, Row, Col, Form } from "react-bootstrap";
 
 const Review = ({ review }) => {
   function formattedDate(d) {
@@ -14,7 +14,8 @@ const Review = ({ review }) => {
   }
   return (
     <>
-      <ProgressBar now={review.rating} min={1} max={5} label={`Rating`} />
+      <Form.Label>Rating</Form.Label>
+      <Form.Range disabled={true} value={review.rating} min={1} max={5} />
       <p className="py-3">{review.content}</p>
       <p>
         Created at <span className="fw-bold">{formattedDate(new Date(review.createdAt))}</span>

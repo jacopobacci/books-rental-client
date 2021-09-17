@@ -2,12 +2,12 @@ import { Modal, Button } from "react-bootstrap";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useContext } from "react";
 
-const Delete = ({ setShowDeleteModal, genre, setShowGenre }) => {
+const Delete = ({ setShowDeleteModal, book, setShowBook }) => {
   const auth = useContext(AuthContext);
 
-  const deleteGenre = async () => {
+  const deleteBook = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres/${genre._id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books/${book._id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.token}`,
@@ -18,7 +18,7 @@ const Delete = ({ setShowDeleteModal, genre, setShowGenre }) => {
       console.log(error);
     }
     setShowDeleteModal(false);
-    setShowGenre(false);
+    setShowBook(false);
   };
 
   const handleClose = () => {
@@ -28,14 +28,14 @@ const Delete = ({ setShowDeleteModal, genre, setShowGenre }) => {
   return (
     <Modal show={true} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Delete genre</Modal.Title>
+        <Modal.Title>Delete book</Modal.Title>
       </Modal.Header>
       <Modal.Body>Are you sure?</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           No
         </Button>
-        <Button variant="primary" onClick={deleteGenre}>
+        <Button variant="primary" onClick={deleteBook}>
           Yes
         </Button>
       </Modal.Footer>

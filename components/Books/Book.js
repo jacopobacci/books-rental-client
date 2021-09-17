@@ -1,9 +1,13 @@
-import { Card, Col, ListGroup, ListGroupItem, Accordion } from "react-bootstrap";
+import { Card, Col, ListGroup, ListGroupItem, Accordion, ButtonGroup, Button } from "react-bootstrap";
 import Review from "../Reviews/Review";
 import Head from "next/head";
+import Delete from "./Delete";
+import { useState } from "react";
 
 const Book = ({ book }) => {
-  console.log(book);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showBook, setShowBook] = useState(true);
+
   return (
     <>
       <Head>
@@ -15,8 +19,8 @@ const Book = ({ book }) => {
           referrerpolicy="no-referrer"
         />
       </Head>
-      <Col className="mb-5">
-        <Card style={{ width: "18rem" }}>
+      <Col lg={4} className={`${!showBook && "d-none"}`}>
+        <Card className="mb-5">
           <Card.Img variant="top" src={book.image} />
           <Card.Body>
             <Card.Title>
@@ -29,15 +33,15 @@ const Book = ({ book }) => {
               Genre <span className="fw-bold">{book.genre.name}</span>
             </ListGroupItem>
             <ListGroupItem>
-              Available {book.isAvailable ? <i class="fas fa-check-circle"></i> : <i class="fas fa-times-circle"></i>}
+              Available {book.isAvailable ? <i className="fas fa-check-circle"></i> : <i className="fas fa-times-circle"></i>}
             </ListGroupItem>
           </ListGroup>
-          <Accordion defaultActiveKey="0">
+          <Accordion defaultActiveKey="0" className="m-2">
             <Accordion.Item eventKey="1">
               <Accordion.Header>Reviews</Accordion.Header>
               <Accordion.Body>
                 <ListGroup className="list-group-flush">
-                  <ListGroupItem>
+                  <ListGroupItem className="px-0">
                     {book.reviews.length ? (
                       <>
                         {book.reviews.map((review) => (
@@ -52,6 +56,13 @@ const Book = ({ book }) => {
               </Accordion.Body>
             </Accordion.Item>
           </Accordion>
+          <ButtonGroup aria-label="Update and delete" className="m-3">
+            <Button variant="primary">Update</Button>
+            <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+              Delete
+            </Button>
+            {showDeleteModal && <Delete setShowDeleteModal={setShowDeleteModal} book={book} setShowBook={setShowBook} />}
+          </ButtonGroup>
         </Card>
       </Col>
     </>
