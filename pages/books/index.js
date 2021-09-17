@@ -5,9 +5,9 @@ import NavigationBar from "../../components/NavigationBar";
 
 export async function getStaticProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`);
-  const data = await res.json();
+  const booksData = await res.json();
 
-  if (!data) {
+  if (!booksData) {
     return {
       redirect: {
         destination: "/notfound",
@@ -17,17 +17,17 @@ export async function getStaticProps(context) {
   }
 
   return {
-    props: { data },
+    props: { booksData },
   };
 }
 
-const index = ({ data }) => {
+const index = ({ booksData }) => {
   return (
     <>
       <NavigationBar />
       <Container>
         <Row className="justify-content-center">
-          {data.books.map((book) => (
+          {booksData.books.map((book) => (
             <Book key={book._id} book={book} />
           ))}
         </Row>

@@ -1,11 +1,29 @@
-import { Form, Button, Row, Container, Col, InputGroup, FormControl } from "react-bootstrap";
+import { Form, Button, Row, Container, Col, DropdownButton, Dropdown } from "react-bootstrap";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const create = () => {
+export async function getStaticProps(context) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
+  const genresData = await res.json();
+
+  if (!genresData) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { genresData }, // will be passed to the page component as props
+  };
+}
+
+const create = ({ genresData }) => {
   const router = useRouter();
   const auth = useContext(AuthContext);
   const { isLoggedIn } = auth;
@@ -56,9 +74,20 @@ const create = () => {
                 <Form.Label>Image</Form.Label>
                 <Form.Control type="text" placeholder="Enter image url" name="image" autoComplete="name" required />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="genre">
+              {/* <Form.Group className="mb-3" controlId="genre">
                 <Form.Label>Genre</Form.Label>
                 <Form.Control type="text" placeholder="Enter genre name" name="genre" autoComplete="name" required />
+              </Form.Group> */}
+              <Form.Group className="mb-3" controlId="genre">
+                <Form.Label>Genre</Form.Label>
+                <Form.Select aria-label="Select genre" name="genre">
+                  <option>Select a genre...</option>
+                  {genresData.genres.map((genre) => (
+                    <option key={genre._id} value={genre.name}>
+                      {genre.name}
+                    </option>
+                  ))}
+                </Form.Select>
               </Form.Group>
               <Form.Group className="mb-3" controlId="description">
                 <Form.Label>Description</Form.Label>
