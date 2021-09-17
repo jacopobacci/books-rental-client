@@ -10,7 +10,7 @@ const Update = ({ genre, setShowUpdate, setGenreName }) => {
     evt.preventDefault();
 
     try {
-      await fetch(`http://localhost:3001/api/genres/${genre._id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres/${genre._id}`, {
         body: JSON.stringify({
           name: evt.target.name.value,
         }),

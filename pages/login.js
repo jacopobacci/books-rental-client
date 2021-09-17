@@ -13,7 +13,8 @@ const login = () => {
   const loginUser = async (evt) => {
     evt.preventDefault();
 
-    const res = await fetch(`http://localhost:3001/api/auth`, {
+    console.log(process.env.NEXT_PUBLIC_URL);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/auth`, {
       body: JSON.stringify({
         email: evt.target.email.value,
         password: evt.target.password.value,

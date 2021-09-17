@@ -18,7 +18,7 @@ const create = () => {
     evt.preventDefault();
 
     try {
-      await fetch(`http://localhost:3001/api/genres`, {
+      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`, {
         body: JSON.stringify({
           name: evt.target.name.value,
         }),

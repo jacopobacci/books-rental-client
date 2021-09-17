@@ -12,7 +12,7 @@ const register = () => {
     evt.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:3001/api/users`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/users`, {
         body: JSON.stringify({
           firstName: evt.target.firstName.value,
           lastName: evt.target.lastName.value,

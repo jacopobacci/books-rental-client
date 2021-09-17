@@ -2,6 +2,7 @@ import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import Link from "next/link";
 import { AuthContext } from "../shared/context/auth-context";
 import { useContext } from "react";
+import { Button } from "react-bootstrap";
 
 const NavigationBar = () => {
   const auth = useContext(AuthContext);
@@ -17,9 +18,9 @@ const NavigationBar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             {isLoggedIn ? (
-              <button className="btn btn-danger" onClick={auth.logout}>
+              <Button variant="danger" onClick={auth.logout}>
                 Logout
-              </button>
+              </Button>
             ) : (
               <>
                 <Link href="/login">
@@ -36,6 +37,14 @@ const NavigationBar = () => {
               </Link>
               <Link href="/genres/create">
                 <NavDropdown.Item href="/genres/create">Create Genre</NavDropdown.Item>
+              </Link>
+            </NavDropdown>
+            <NavDropdown title="Books" id="basic-nav-dropdown">
+              <Link href="/books">
+                <NavDropdown.Item href="/books">All Books</NavDropdown.Item>
+              </Link>
+              <Link href="/books/create">
+                <NavDropdown.Item href="/books/create">Create Book</NavDropdown.Item>
               </Link>
             </NavDropdown>
           </Nav>

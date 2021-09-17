@@ -5,7 +5,7 @@ import { useState } from "react";
 import Genre from "../../components/Genres/Genre";
 
 export async function getStaticProps(context) {
-  const res = await fetch(`http://localhost:3001/api/genres`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
   const data = await res.json();
 
   if (!data) {
@@ -34,7 +34,7 @@ const index = ({ data }) => {
                 Genres
               </ListGroup.Item>
               {data.genres.map((genre) => (
-                <Genre key={genre.name} genre={genre} />
+                <Genre key={genre._id} genre={genre} />
               ))}
             </ListGroup>
           </Col>

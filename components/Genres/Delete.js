@@ -7,7 +7,7 @@ const Delete = ({ setShowDeleteModal, genre, setShowGenre }) => {
 
   const handleClose = async () => {
     try {
-      await fetch(`http://localhost:3001/api/genres/${genre._id}`, {
+      await fetch(`h${process.env.NEXT_PUBLIC_URL}/api/genres/${genre._id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${auth.token}`,
