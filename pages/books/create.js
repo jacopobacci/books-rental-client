@@ -1,9 +1,8 @@
-import { Form, Button, Row, Container, Col, DropdownButton, Dropdown } from "react-bootstrap";
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
-import { useContext } from "react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 export async function getStaticProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
@@ -34,7 +33,6 @@ const create = ({ genresData }) => {
 
   const createBook = async (evt) => {
     evt.preventDefault();
-
     try {
       await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`, {
         body: JSON.stringify({
@@ -55,6 +53,7 @@ const create = ({ genresData }) => {
       console.log(error);
     }
   };
+
   return (
     <div>
       <NavigationBar />
@@ -74,10 +73,6 @@ const create = ({ genresData }) => {
                 <Form.Label>Image</Form.Label>
                 <Form.Control type="text" placeholder="Enter image url" name="image" autoComplete="name" required />
               </Form.Group>
-              {/* <Form.Group className="mb-3" controlId="genre">
-                <Form.Label>Genre</Form.Label>
-                <Form.Control type="text" placeholder="Enter genre name" name="genre" autoComplete="name" required />
-              </Form.Group> */}
               <Form.Group className="mb-3" controlId="genre">
                 <Form.Label>Genre</Form.Label>
                 <Form.Select aria-label="Select genre" name="genre">

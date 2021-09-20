@@ -3,6 +3,7 @@ import Review from "../Reviews/Review";
 import Head from "next/head";
 import Delete from "./Delete";
 import { useState } from "react";
+import Link from "next/link";
 
 const Book = ({ book }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -36,7 +37,7 @@ const Book = ({ book }) => {
               Available {book.isAvailable ? <i className="fas fa-check-circle"></i> : <i className="fas fa-times-circle"></i>}
             </ListGroupItem>
           </ListGroup>
-          <Accordion defaultActiveKey="0" className="m-2">
+          <Accordion defaultActiveKey="0" className="m-3">
             <Accordion.Item eventKey="1">
               <Accordion.Header>Reviews</Accordion.Header>
               <Accordion.Body>
@@ -56,8 +57,21 @@ const Book = ({ book }) => {
               </Accordion.Body>
             </Accordion.Item>
           </Accordion>
+          <div className="mx-3">
+            <div className="d-grid gap-2">
+              <Button variant="success">Rent</Button>
+            </div>
+          </div>
+
           <ButtonGroup aria-label="Update and delete" className="m-3">
-            <Button variant="primary">Update</Button>
+            <Link
+              href={{
+                pathname: "/books/[bookId]",
+                query: { bookId: book._id },
+              }}
+            >
+              <Button variant="primary">Update</Button>
+            </Link>
             <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
               Delete
             </Button>
