@@ -1,10 +1,12 @@
 import { Button, Form, ButtonGroup } from "react-bootstrap";
 import Update from "./Update";
 import { useState } from "react";
+import DeleteReview from "./DeleteReview";
 
 const Review = ({ review }) => {
   const [showUpdate, setShowUpdate] = useState(false);
   const [initReview, setInitReview] = useState({ rating: review.rating, content: review.content });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   function formattedDate(d) {
     let month = String(d.getMonth() + 1);
@@ -34,9 +36,12 @@ const Review = ({ review }) => {
         <Button variant="primary" onClick={() => (!showUpdate ? setShowUpdate(true) : setShowUpdate(false))}>
           Update
         </Button>
-        <Button variant="danger">Delete</Button>
+        <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+          Delete
+        </Button>
       </ButtonGroup>
       {showUpdate && <Update review={review} setShowUpdate={setShowUpdate} setInitReview={setInitReview} />}
+      {showDeleteModal && <DeleteReview setShowDeleteModal={setShowDeleteModal} review={review} />}
     </div>
   );
 };
