@@ -38,7 +38,7 @@ const Update = ({ genre, setShowUpdate, setGenreName }) => {
           <Form.Group className="mb-3" controlId="name">
             <Form.Label>Genre</Form.Label>
             <Form.Control
-              type="name"
+              type="text"
               placeholder="Enter genre name"
               name="name"
               autoComplete="name"

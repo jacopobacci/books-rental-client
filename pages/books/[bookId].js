@@ -2,7 +2,7 @@ import React from "react";
 import NavigationBar from "../../components/NavigationBar";
 import { useRouter } from "next/router";
 import { useState, useEffect, useContext } from "react";
-import { Form, Button, Row, Container, Col, DropdownButton, Dropdown } from "react-bootstrap";
+import { Form, Button, Row, Container, Col } from "react-bootstrap";
 import { AuthContext } from "../../shared/context/auth-context";
 
 const Update = () => {
@@ -25,7 +25,6 @@ const Update = () => {
       const { title, author, image, genre, description } = bookData.book;
       setBook({ title, author, image, genre: genre.name, description });
     };
-
     getBook();
   }, []);
 
@@ -35,13 +34,11 @@ const Update = () => {
       const genres = await res.json();
       setAllGenres(genres);
     };
-
     getGenres();
   }, []);
 
   const updateBook = async (evt) => {
     evt.preventDefault();
-
     try {
       await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books/${bookId}`, {
         body: JSON.stringify({
@@ -82,9 +79,9 @@ const Update = () => {
                   placeholder="Enter title"
                   name="title"
                   autoComplete="name"
-                  required
                   value={book.title}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="author">
@@ -94,9 +91,9 @@ const Update = () => {
                   placeholder="Enter author name"
                   name="author"
                   autoComplete="name"
-                  required
                   value={book.author}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="image">
@@ -129,10 +126,11 @@ const Update = () => {
                   rows={3}
                   value={book.description}
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
               <Button variant="primary" type="submit" className="me-3">
-                Update Genre
+                Update Book
               </Button>
             </Form>
           </Col>

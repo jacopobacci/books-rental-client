@@ -89,7 +89,7 @@ const create = ({ genresData }) => {
                 <Form.Control as="textarea" name="description" placeholder="Enter description" rows={3} />
               </Form.Group>
               <Button variant="primary" type="submit" className="me-3">
-                Create Genre
+                Create Book
               </Button>
             </Form>
           </Col>

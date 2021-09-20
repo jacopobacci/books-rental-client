@@ -4,10 +4,12 @@ import Head from "next/head";
 import Delete from "./Delete";
 import { useState } from "react";
 import Link from "next/link";
+import Create from "../Reviews/Create";
 
 const Book = ({ book }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showBook, setShowBook] = useState(true);
+  const [showCreateReview, setShowCreateReview] = useState(false);
 
   return (
     <>
@@ -22,7 +24,7 @@ const Book = ({ book }) => {
       </Head>
       <Col lg={4} className={`${!showBook && "d-none"}`}>
         <Card className="mb-5">
-          <Card.Img variant="top" src={book.image} />
+          <Card.Img variant="top" src={book.image} style={{ height: "60vh", objectFit: "contain" }} className="p-3" />
           <Card.Body>
             <Card.Title>
               {book.title} by {book.author}
@@ -40,7 +42,7 @@ const Book = ({ book }) => {
           <Accordion defaultActiveKey="0" className="m-3">
             <Accordion.Item eventKey="1">
               <Accordion.Header>Reviews</Accordion.Header>
-              <Accordion.Body>
+              <Accordion.Body className="p-0">
                 <ListGroup className="list-group-flush">
                   <ListGroupItem className="px-0">
                     {book.reviews.length ? (
@@ -50,7 +52,19 @@ const Book = ({ book }) => {
                         ))}
                       </>
                     ) : (
-                      <span>No reviews yet.</span>
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        className="m-2"
+                        onClick={() => (!showCreateReview ? setShowCreateReview(true) : setShowCreateReview(false))}
+                      >
+                        Add review
+                      </Button>
+                    )}
+                    {showCreateReview && (
+                      <div className="p-4">
+                        <Create bookId={book._id} setShowCreateReview={setShowCreateReview} />
+                      </div>
                     )}
                   </ListGroupItem>
                 </ListGroup>
