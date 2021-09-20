@@ -1,14 +1,13 @@
 import { AuthContext } from "../../shared/context/auth-context";
 import { useContext, useState } from "react";
 import { Button, Form, Row, Col } from "react-bootstrap";
+import { useRouter } from "next/router";
 
 const Create = ({ bookId, setShowCreateReview }) => {
   const auth = useContext(AuthContext);
   const [review, setReview] = useState({ rating: "", content: "" });
 
-  const createReview = async (evt) => {
-    evt.preventDefault();
-
+  const createReview = async () => {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_URL}/api/reviews/${bookId}`, {
         body: JSON.stringify({
@@ -31,8 +30,6 @@ const Create = ({ bookId, setShowCreateReview }) => {
     evt.preventDefault();
     setReview({ ...review, [evt.target.name]: evt.target.value });
   };
-
-  console.log(review);
 
   return (
     <Row className="justify-content-center align-items-center">

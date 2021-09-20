@@ -56,7 +56,7 @@ const Book = ({ book }) => {
                         variant="primary"
                         type="submit"
                         className="m-2"
-                        onClick={() => (!showCreateReview ? setShowCreateReview(true) : setShowCreateReview(false))}
+                        onClick={() => (!showCreateReview ? setShowCreateReview(true) : setshowCreateReview(false))}
                       >
                         Add review
                       </Button>
