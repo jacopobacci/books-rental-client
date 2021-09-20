@@ -32,6 +32,8 @@ const Create = ({ bookId, setShowCreateReview }) => {
     setReview({ ...review, [evt.target.name]: evt.target.value });
   };
 
+  console.log(review);
+
   return (
     <Row className="justify-content-center align-items-center">
       <Col>
