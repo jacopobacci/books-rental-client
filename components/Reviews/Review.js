@@ -3,7 +3,7 @@ import Update from "./Update";
 import { useState } from "react";
 import DeleteReview from "./DeleteReview";
 
-const Review = ({ review }) => {
+const Review = ({ review, setDeletedReview }) => {
   const [showUpdate, setShowUpdate] = useState(false);
   const [initReview, setInitReview] = useState({ rating: review.rating, content: review.content });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -41,7 +41,9 @@ const Review = ({ review }) => {
         </Button>
       </ButtonGroup>
       {showUpdate && <Update review={review} setShowUpdate={setShowUpdate} setInitReview={setInitReview} />}
-      {showDeleteModal && <DeleteReview setShowDeleteModal={setShowDeleteModal} review={review} />}
+      {showDeleteModal && (
+        <DeleteReview setShowDeleteModal={setShowDeleteModal} review={review} setDeletedReview={setDeletedReview} />
+      )}
     </div>
   );
 };
