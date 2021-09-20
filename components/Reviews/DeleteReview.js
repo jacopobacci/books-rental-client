@@ -2,7 +2,7 @@ import { Modal, Button } from "react-bootstrap";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useContext } from "react";
 
-const Delete = ({ setShowDeleteModal, review, setDeletedReview }) => {
+const Delete = ({ setShowDeleteModal, review }) => {
   const auth = useContext(AuthContext);
 
   const deleteReview = async () => {
@@ -22,7 +22,6 @@ const Delete = ({ setShowDeleteModal, review, setDeletedReview }) => {
 
   const handleClose = () => {
     setShowDeleteModal(false);
-    setDeletedReview(true);
   };
 
   return (
