@@ -34,7 +34,7 @@ const Update = ({ review, setShowUpdate, setInitReview }) => {
   };
 
   return (
-    <Row className="justify-content-center align-items-center">
+    <Row className="justify-content-center align-items-center pt-3">
       <Col>
         <Form onSubmit={updateReview}>
           <Form.Group className="mb-3" controlId="rating">

@@ -47,6 +47,14 @@ const NavigationBar = () => {
                 <NavDropdown.Item href="/books/create">Create Book</NavDropdown.Item>
               </Link>
             </NavDropdown>
+            <NavDropdown title="Customers" id="basic-nav-dropdown">
+              <Link href="/customers">
+                <NavDropdown.Item href="/books">All Customers</NavDropdown.Item>
+              </Link>
+              <Link href="/customers/create">
+                <NavDropdown.Item href="/books/create">Create Customer</NavDropdown.Item>
+              </Link>
+            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>

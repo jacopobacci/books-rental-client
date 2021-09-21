@@ -42,7 +42,7 @@ const create = () => {
             <Form onSubmit={createGenre}>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>Genre</Form.Label>
-                <Form.Control type="name" placeholder="Enter genre name" name="name" autoComplete="name" required />
+                <Form.Control type="text" placeholder="Enter genre name" name="name" autoComplete="name" required />
               </Form.Group>
               <Button variant="primary" type="submit" className="me-3">
                 Create Genre

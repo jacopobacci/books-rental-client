@@ -8,15 +8,6 @@ export async function getStaticProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
   const genresData = await res.json();
 
-  if (!genresData) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
   return {
     props: { genresData }, // will be passed to the page component as props
   };
