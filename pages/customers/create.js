@@ -1,10 +1,8 @@
-import { Form, Button, Row, Container, Col } from "react-bootstrap";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
-import { useContext } from "react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Book from "../../components/Books/Book";
 
 export async function getStaticProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
@@ -131,8 +129,9 @@ const create = ({ genresData }) => {
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicCheckbox">
                 <Form.Label>Favorite genres</Form.Label>
+                <br />
                 {genresData.genres.map((genre) => (
-                  <Button key={genre._id} value={genre.name} onClick={handleClick}>
+                  <Button key={genre._id} value={genre.name} size="sm" className="me-2 mb-2" onClick={handleClick}>
                     {genre.name}
                   </Button>
                 ))}
