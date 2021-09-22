@@ -1,6 +1,7 @@
 import { AuthContext } from "../../shared/context/auth-context";
 import { useContext, useEffect, useState } from "react";
-import { ListGroup, Row, Col } from "react-bootstrap";
+import { ListGroup, Row, Col, ButtonGroup, Button } from "react-bootstrap";
+import Link from "next/link";
 
 const Customer = ({ customer }) => {
   const auth = useContext(AuthContext);
@@ -26,8 +27,6 @@ const Customer = ({ customer }) => {
     getMe();
   }, []);
 
-  console.log(customer.favouriteGenres);
-
   return (
     <Row className="justify-content-center">
       <Col lg={2}>
@@ -43,12 +42,25 @@ const Customer = ({ customer }) => {
           <ListGroup.Item>
             <ul>
               {customer.favouriteGenres.map((genre) => (
-                <li>{genre.name}</li>
+                <li key={genre.name}>{genre.name}</li>
               ))}
             </ul>
           </ListGroup.Item>
-          {/* <ListGroup.Item>{customer.favouriteGenres}</ListGroup.Item> */}
         </ListGroup>
+        <ButtonGroup aria-label="Update and delete" className="m-3">
+          <Link
+            href={{
+              pathname: "/customers/[customerId]",
+              query: { customerId: customer._id },
+            }}
+          >
+            <Button variant="primary">Update</Button>
+          </Link>
+        </ButtonGroup>
+        {/* <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+              Delete
+            </Button>
+            {showDeleteModal && <Delete setShowDeleteModal={setShowDeleteModal} book={book} setShowBook={setShowBook} />} */}
       </Col>
     </Row>
   );
