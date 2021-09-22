@@ -2,8 +2,11 @@ import { AuthContext } from "../../shared/context/auth-context";
 import { useContext, useEffect, useState } from "react";
 import { ListGroup, Row, Col, ButtonGroup, Button } from "react-bootstrap";
 import Link from "next/link";
+import DeleteCustomer from "./DeleteCustomer";
 
 const Customer = ({ customer }) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showCustomer, setShowCustomer] = useState(true);
   const auth = useContext(AuthContext);
   const [user, setUser] = useState({ user: { firstName: "", lastName: "", email: "" } });
 
@@ -28,7 +31,7 @@ const Customer = ({ customer }) => {
   }, []);
 
   return (
-    <Row className="justify-content-center">
+    <Row className={`${!showCustomer && "d-none"} justify-content-center`}>
       <Col lg={2}>
         <ListGroup>
           <ListGroup.Item variant="dark">
@@ -57,10 +60,12 @@ const Customer = ({ customer }) => {
             <Button variant="primary">Update</Button>
           </Link>
         </ButtonGroup>
-        {/* <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
-              Delete
-            </Button>
-            {showDeleteModal && <Delete setShowDeleteModal={setShowDeleteModal} book={book} setShowBook={setShowBook} />} */}
+        <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+          Delete
+        </Button>
+        {showDeleteModal && (
+          <DeleteCustomer setShowDeleteModal={setShowDeleteModal} customer={customer} setShowCustomer={setShowCustomer} />
+        )}
       </Col>
     </Row>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row } from "react-bootstrap";
-import Customer from "../../components/Customers/Customer";
+import Customer from "../../components/Customers/Customer.js";
 import NavigationBar from "../../components/NavigationBar";
 
 export async function getStaticProps(context) {
@@ -27,9 +27,11 @@ const index = ({ data }) => {
       <NavigationBar />
       <Container>
         <Row className="justify-content-center">
-          {data.customers.map((customer) => (
-            <Customer key={customer._id} customer={customer} />
-          ))}
+          {data.customers !== undefined ? (
+            data.customers.map((customer) => <Customer key={customer._id} customer={customer} />)
+          ) : (
+            <p>No customers yet.</p>
+          )}
         </Row>
       </Container>
     </>

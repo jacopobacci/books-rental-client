@@ -1,7 +1,7 @@
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import Link from "next/link";
 import { AuthContext } from "../shared/context/auth-context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Button } from "react-bootstrap";
 
 const NavigationBar = () => {
