@@ -1,11 +1,17 @@
 import Head from "next/head";
-import { useState } from "react";
 import { Card, Col, ListGroup, ListGroupItem } from "react-bootstrap";
 import Reviews from "../Reviews/Reviews";
 import BookButtons from "./BookButtons";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useContext, useState } from "react";
 
 const Book = ({ book }) => {
+  const auth = useContext(AuthContext);
+  const { isLoggedIn } = auth;
+
   const [showBook, setShowBook] = useState(true);
+  const [bookAvailable, setBookAvailable] = useState(book.isAvailable);
+  const [dateOut, setDateOut] = useState("");
 
   return (
     <>
@@ -32,11 +38,14 @@ const Book = ({ book }) => {
               Genre <span className="fw-bold">{book.genre.name}</span>
             </ListGroupItem>
             <ListGroupItem>
-              Available {book.isAvailable ? <i className="fas fa-check-circle"></i> : <i className="fas fa-times-circle"></i>}
+              Available {bookAvailable ? <i className="fas fa-check-circle"></i> : <i className="fas fa-times-circle"></i>}
+              {dateOut && <span className="ps-3">Date out: {dateOut}</span>}
             </ListGroupItem>
           </ListGroup>
           <Reviews book={book} />
-          <BookButtons book={book} setShowBook={setShowBook} />
+          {isLoggedIn && (
+            <BookButtons book={book} setShowBook={setShowBook} setBookAvailable={setBookAvailable} setDateOut={setDateOut} />
+          )}
         </Card>
       </Col>
     </>

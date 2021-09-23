@@ -1,9 +1,13 @@
 import { Accordion, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import Create from "./Create";
 import Review from "./Review";
-import { useState } from "react";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useContext, useState } from "react";
 
 const Reviews = ({ book }) => {
+  const auth = useContext(AuthContext);
+  const { isLoggedIn } = auth;
+
   const [showCreateReview, setShowCreateReview] = useState(false);
 
   return (
@@ -19,7 +23,7 @@ const Reviews = ({ book }) => {
                     <Review key={review._id} review={review} />
                   ))}
                 </>
-              ) : (
+              ) : !book.reviews.length && isLoggedIn ? (
                 <Button
                   variant="primary"
                   type="submit"
@@ -28,6 +32,8 @@ const Reviews = ({ book }) => {
                 >
                   Add review
                 </Button>
+              ) : (
+                <span className="p-3">No reviews yet, login to add a review.</span>
               )}
               {showCreateReview && (
                 <div className="p-4">

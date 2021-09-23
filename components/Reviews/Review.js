@@ -1,9 +1,13 @@
 import { Button, Form, ButtonGroup } from "react-bootstrap";
 import Update from "./Update";
-import { useState } from "react";
 import DeleteReview from "./DeleteReview";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useContext, useState } from "react";
 
 const Review = ({ review }) => {
+  const auth = useContext(AuthContext);
+  const { isLoggedIn } = auth;
+
   const [showUpdate, setShowUpdate] = useState(false);
   const [initReview, setInitReview] = useState({ rating: review.rating, content: review.content });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -32,16 +36,21 @@ const Review = ({ review }) => {
           {review.user.firstName} {review.user.lastName}
         </span>
       </p>
-      <ButtonGroup aria-label="Basic example">
-        <Button variant="primary" onClick={() => (!showUpdate ? setShowUpdate(true) : setShowUpdate(false))}>
-          Update
-        </Button>
-        <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
-          Delete
-        </Button>
-      </ButtonGroup>
-      {showUpdate && <Update review={review} setShowUpdate={setShowUpdate} setInitReview={setInitReview} />}
-      {showDeleteModal && <DeleteReview setShowDeleteModal={setShowDeleteModal} review={review} />}
+      {isLoggedIn && (
+        <>
+          {" "}
+          <ButtonGroup aria-label="Basic example">
+            <Button variant="primary" onClick={() => (!showUpdate ? setShowUpdate(true) : setShowUpdate(false))}>
+              Update
+            </Button>
+            <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+              Delete
+            </Button>
+          </ButtonGroup>
+          {showUpdate && <Update review={review} setShowUpdate={setShowUpdate} setInitReview={setInitReview} />}
+          {showDeleteModal && <DeleteReview setShowDeleteModal={setShowDeleteModal} review={review} />}
+        </>
+      )}
     </div>
   );
 };

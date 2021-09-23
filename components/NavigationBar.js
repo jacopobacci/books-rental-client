@@ -55,6 +55,9 @@ const NavigationBar = () => {
                 <NavDropdown.Item href="/books/create">Create Customer</NavDropdown.Item>
               </Link>
             </NavDropdown>
+            <Link href="/rentals">
+              <Nav.Link href="/rentals">Rentals</Nav.Link>
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
