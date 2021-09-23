@@ -1,6 +1,13 @@
-import { Row, Col, ListGroup } from "react-bootstrap";
+import { useContext, useState } from "react";
+import { Col, ListGroup, Button } from "react-bootstrap";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const Rental = ({ rental }) => {
+  const auth = useContext(AuthContext);
+  const { isLoggedIn } = auth;
+
+  const [deleted, setDeleted] = useState(false);
+
   function formattedDate(d) {
     let month = String(d.getMonth() + 1);
     let day = String(d.getDate());
@@ -12,40 +19,50 @@ const Rental = ({ rental }) => {
     return `${day}/${month}/${year}`;
   }
 
-  console.log(rental.book);
+  const deleteRental = async () => {
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals/${rental._id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
+      method: "DELETE",
+    });
+    setDeleted(true);
+  };
 
   return (
-    <Col lg={4}>
-      <ListGroup>
-        <ListGroup.Item variant="dark">
-          Book rented by {rental.customer.user.firstName} {rental.customer.user.lastName}
-        </ListGroup.Item>
-        <ListGroup.Item>
-          Book: {rental.book.title} by {rental.book.author}
-        </ListGroup.Item>
-        <ListGroup.Item>Date out: {formattedDate(new Date(rental.dateOut))}</ListGroup.Item>
-      </ListGroup>
-      {/* {isLoggedIn && (
-          <>
-            <ButtonGroup aria-label="Update and delete" className="m-3">
-              <Link
-                href={{
-                  pathname: "/customers/[customerId]",
-                  query: { customerId: customer._id },
-                }}
-              >
-                <Button variant="primary">Update</Button>
-              </Link>
-            </ButtonGroup>
-            <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
-              Delete
-            </Button>
-            {showDeleteModal && (
-              <DeleteCustomer setShowDeleteModal={setShowDeleteModal} customer={customer} setShowCustomer={setShowCustomer} />
+    <>
+      {deleted ? (
+        <p>There are no rentals at the moment.</p>
+      ) : (
+        <Col lg={4}>
+          <ListGroup>
+            <ListGroup.Item variant="dark">
+              Book rented by{" "}
+              <span className="fw-bold">
+                {rental.customer.user.firstName} {rental.customer.user.lastName}
+              </span>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Title: <span className="fw-bold">{rental.book.title}</span>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Author: <span className="fw-bold">{rental.book.author}</span>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              Date out: <span className="fw-bold">{formattedDate(new Date(rental.dateOut))}</span>
+            </ListGroup.Item>
+            {isLoggedIn && (
+              <ListGroup.Item>
+                <Button variant="primary" onClick={deleteRental}>
+                  Return this book
+                </Button>
+              </ListGroup.Item>
             )}
-          </>
-        )} */}
-    </Col>
+          </ListGroup>
+        </Col>
+      )}
+    </>
   );
 };
 

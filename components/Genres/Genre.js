@@ -18,7 +18,7 @@ const Genre = ({ genre }) => {
   return (
     <ListGroup.Item key={genre.name} className={`${!showGenre && "d-none"}`}>
       {genreName}
-      {isLoggedIn && (
+      {isLoggedIn && genre.user === auth.userId && (
         <>
           <Button variant="danger" className="float-end mx-2" onClick={() => setShowDeleteModal(true)}>
             Delete

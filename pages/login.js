@@ -2,18 +2,25 @@ import { Form, Button, Row, Container, Col } from "react-bootstrap";
 import Link from "next/link";
 import NavigationBar from "../components/NavigationBar";
 import jwt from "jsonwebtoken";
-import { useState } from "react";
 import { AuthContext } from "../shared/context/auth-context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { useRouter } from "next/router";
 
-const login = () => {
-  const [message, setMessage] = useState("");
+export async function getStaticProps(context) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers`);
+  const data = await res.json();
+  return {
+    props: { data }, // will be passed to the page component as props
+  };
+}
+
+const login = ({ data }) => {
+  const router = useRouter();
   const auth = useContext(AuthContext);
 
   const loginUser = async (evt) => {
     evt.preventDefault();
 
-    console.log(process.env.NEXT_PUBLIC_URL);
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/auth`, {
       body: JSON.stringify({
         email: evt.target.email.value,
@@ -27,14 +34,24 @@ const login = () => {
 
     const result = await res.json();
     const { token } = result;
-
+    console.log(data);
     if (token) {
       const json = jwt.decode(token);
-      const { firstName, lastName, userId } = json;
+      const { userId } = json;
       auth.login(userId, token);
-      setMessage(`Welcome ${firstName} ${lastName}`);
+      if (data.error) {
+        return router.push("/customers/create");
+      } else {
+        data.customers.map((customer) => {
+          if (customer.user && customer.user._id === userId) {
+            return router.push("/books");
+          } else {
+            return router.push("/customers/create");
+          }
+        });
+      }
     } else {
-      setMessage("Something went wrong");
+      router.push("/login");
     }
   };
 
@@ -42,7 +59,6 @@ const login = () => {
     <div>
       <NavigationBar />
       <Container>
-        <h1>{message}</h1>
         <Row className="justify-content-center align-items-center">
           <Col xs lg="4">
             <Form onSubmit={loginUser}>
@@ -57,7 +73,7 @@ const login = () => {
               <Button variant="primary" type="submit" className="me-3">
                 Login
               </Button>
-              <Link href="/signup">
+              <Link href="/register">
                 <a>Or signup</a>
               </Link>
             </Form>

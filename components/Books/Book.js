@@ -26,7 +26,7 @@ const Book = ({ book }) => {
       </Head>
       <Col lg={4} className={`${!showBook && "d-none"}`}>
         <Card className="mb-5">
-          <Card.Img variant="top" src={book.image} style={{ height: "60vh", objectFit: "contain" }} className="p-3" />
+          <Card.Img variant="top" src={book.image} />
           <Card.Body>
             <Card.Title>
               {book.title} by {book.author}

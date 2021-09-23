@@ -1,8 +1,6 @@
 import { Container, Row } from "react-bootstrap";
 import Customer from "../../components/Customers/Customer.js";
 import NavigationBar from "../../components/NavigationBar";
-import { useContext } from "react";
-import { AuthContext } from "../../shared/context/auth-context";
 
 export async function getStaticProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers`);
@@ -23,9 +21,6 @@ export async function getStaticProps(context) {
 }
 
 const index = ({ data }) => {
-  const auth = useContext(AuthContext);
-  const { isLoggedIn } = auth;
-
   return (
     <>
       <NavigationBar />

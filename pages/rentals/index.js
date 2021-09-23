@@ -12,17 +12,15 @@ export async function getStaticProps(context) {
 }
 
 const index = ({ rentalsData }) => {
-  console.log(rentalsData);
-
   return (
     <>
       <NavigationBar />
       <Container>
         <Row className="justify-content-center">
-          {!rentalsData.message ? (
+          {!rentalsData.error ? (
             rentalsData.rentals.map((rental) => <Rental key={rental._id} rental={rental} />)
           ) : (
-            <p>{rentalsData.message}</p>
+            <p>{rentalsData.error}</p>
           )}
         </Row>
       </Container>
