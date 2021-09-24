@@ -17,6 +17,7 @@ const create = ({ genresData }) => {
   const router = useRouter();
   const auth = useContext(AuthContext);
   const { isLoggedIn } = auth;
+
   const [customer, setCustomer] = useState({
     street: "",
     streetNumber: "",
@@ -25,6 +26,7 @@ const create = ({ genresData }) => {
     phone: "",
     favouriteGenres: [],
   });
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     if (!isLoggedIn) router.push("/login");
@@ -32,8 +34,12 @@ const create = ({ genresData }) => {
 
   const createCustomer = async (evt) => {
     evt.preventDefault();
-
-    try {
+    const form = evt.currentTarget;
+    if (form.checkValidity() === false) {
+      evt.stopPropagation();
+    }
+    setValidated(true);
+    if (validated) {
       await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers`, {
         body: JSON.stringify({
           street: customer.street,
@@ -50,8 +56,6 @@ const create = ({ genresData }) => {
         method: "POST",
       });
       router.push("/customers");
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -71,7 +75,8 @@ const create = ({ genresData }) => {
       <Container>
         <Row className="justify-content-center align-items-center">
           <Col xs lg="4">
-            <Form onSubmit={createCustomer}>
+            <h1 className="mb-3">Create a customer profile.</h1>
+            <Form noValidate validated={validated} onSubmit={createCustomer}>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>Street</Form.Label>
                 <Form.Control
@@ -104,6 +109,7 @@ const create = ({ genresData }) => {
                   onChange={handleChange}
                   required
                 />
+                <Form.Control.Feedback type="invalid">Min 4 digits</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>City</Form.Label>
@@ -126,6 +132,7 @@ const create = ({ genresData }) => {
                   onChange={handleChange}
                   required
                 />
+                <Form.Control.Feedback type="invalid">Min 5 digits</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicCheckbox">
                 <Form.Label>Favorite genres</Form.Label>

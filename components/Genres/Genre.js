@@ -5,6 +5,7 @@ import { ListGroup, Button } from "react-bootstrap";
 import Delete from "./Delete";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useContext } from "react";
+import ErrorNotification from "../../shared/components/ErrorNotification";
 
 const Genre = ({ genre }) => {
   const auth = useContext(AuthContext);

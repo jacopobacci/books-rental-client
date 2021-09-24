@@ -4,6 +4,7 @@ import { AuthContext } from "../shared/context/auth-context";
 import { useContext, useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import jwt from "jsonwebtoken";
+import Image from "next/image";
 
 const NavigationBar = () => {
   const auth = useContext(AuthContext);
@@ -23,13 +24,16 @@ const NavigationBar = () => {
   return (
     <Navbar bg="light" expand="lg" className="mb-5 py-3">
       <Container>
+        <Image src="/books-rental.png" width={50} height={50} alt="Books Rental Logo" />
         <Link href="/">
-          <Navbar.Brand href="/">Books Rental</Navbar.Brand>
+          <Navbar.Brand href="/" className="ps-3">
+            Books Rental
+          </Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <NavDropdown title="Books" id="basic-nav-dropdown">
+            <NavDropdown title="Books" id="basic-nav-dropdown" className="px-4">
               <Link href="/books">
                 <NavDropdown.Item href="/books">All Books</NavDropdown.Item>
               </Link>
@@ -37,7 +41,7 @@ const NavigationBar = () => {
                 <NavDropdown.Item href="/books/create">Create Book</NavDropdown.Item>
               </Link>
             </NavDropdown>
-            <NavDropdown title="Genres" id="basic-nav-dropdown">
+            <NavDropdown title="Genres" id="basic-nav-dropdown" className="px-4">
               <Link href="/genres">
                 <NavDropdown.Item href="/genres">All genres</NavDropdown.Item>
               </Link>
@@ -45,7 +49,7 @@ const NavigationBar = () => {
                 <NavDropdown.Item href="/genres/create">Create Genre</NavDropdown.Item>
               </Link>
             </NavDropdown>
-            <NavDropdown title="Customers" id="basic-nav-dropdown">
+            <NavDropdown title="Customers" id="basic-nav-dropdown" className="px-4">
               <Link href="/customers">
                 <NavDropdown.Item href="/books">All Customers</NavDropdown.Item>
               </Link>
@@ -54,13 +58,15 @@ const NavigationBar = () => {
               </Link>
             </NavDropdown>
             <Link href="/rentals">
-              <Nav.Link href="/rentals">Rentals</Nav.Link>
+              <Nav.Link href="/rentals" className="px-4">
+                Rentals
+              </Nav.Link>
             </Link>
           </Nav>
           <Nav>
             {isLoggedIn ? (
               <>
-                <Navbar.Text className="pe-3">{myName}</Navbar.Text>
+                <Navbar.Text className="pe-4">{myName}</Navbar.Text>
                 <Button variant="danger" className="float-end" onClick={auth.logout}>
                   Logout
                 </Button>

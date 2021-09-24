@@ -6,19 +6,21 @@ const Delete = ({ setShowDeleteModal, genre, setShowGenre }) => {
   const auth = useContext(AuthContext);
 
   const deleteGenre = async () => {
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres/${genre._id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-        method: "DELETE",
-      });
-    } catch (error) {
-      console.log(error);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres/${genre._id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
+      method: "DELETE",
+    });
+    const result = await res.json();
+    if (!result.error) {
+      setShowDeleteModal(false);
+      setShowGenre(false);
+    } else {
+      setShowDeleteModal(false);
+      console.log(`ERROR: ${result.error}`);
     }
-    setShowDeleteModal(false);
-    setShowGenre(false);
   };
 
   const handleClose = () => {

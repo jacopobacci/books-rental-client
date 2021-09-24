@@ -3,8 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthContext } from "../shared/context/auth-context";
 import { useAuth } from "../shared/hooks/auth-hook";
 import Router from "next/router";
-import NProgress from "nprogress"; //nprogress module
-import "nprogress/nprogress.css"; //styles of nprogress
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());

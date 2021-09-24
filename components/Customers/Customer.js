@@ -10,8 +10,10 @@ const Customer = ({ customer }) => {
   const auth = useContext(AuthContext);
   const { isLoggedIn } = auth;
 
+  console.log(customer, auth.userId);
+
   return (
-    <Row className={`${!showCustomer && "d-none"} justify-content-center`}>
+    <Row className={`${!showCustomer && "d-none"} justify-content-center mb-3`}>
       <Col lg={4}>
         <ListGroup>
           <ListGroup.Item variant="dark">
@@ -43,29 +45,27 @@ const Customer = ({ customer }) => {
               ))}
             </ul>
           </ListGroup.Item>
-          <ListGroup.Item>
-            {isLoggedIn && (
-              <>
-                <ButtonGroup aria-label="Update and delete">
-                  <Link
-                    href={{
-                      pathname: "/customers/[customerId]",
-                      query: { customerId: customer._id },
-                    }}
-                  >
-                    <Button variant="primary">Update</Button>
-                  </Link>
 
-                  <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
-                    Delete
-                  </Button>
-                </ButtonGroup>
-                {showDeleteModal && (
-                  <DeleteCustomer setShowDeleteModal={setShowDeleteModal} customer={customer} setShowCustomer={setShowCustomer} />
-                )}
-              </>
-            )}
-          </ListGroup.Item>
+          {isLoggedIn && customer.user._id === auth.userId && (
+            <ListGroup.Item>
+              <ButtonGroup aria-label="Update and delete">
+                <Link
+                  href={{
+                    pathname: "/customers/[customerId]",
+                    query: { customerId: customer._id },
+                  }}
+                >
+                  <Button variant="primary">Update</Button>
+                </Link>
+                <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+                  Delete
+                </Button>
+              </ButtonGroup>
+              {showDeleteModal && (
+                <DeleteCustomer setShowDeleteModal={setShowDeleteModal} customer={customer} setShowCustomer={setShowCustomer} />
+              )}
+            </ListGroup.Item>
+          )}
         </ListGroup>
       </Col>
     </Row>

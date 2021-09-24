@@ -33,7 +33,7 @@ const Reviews = ({ book }) => {
                   Add review
                 </Button>
               ) : (
-                <span className="p-5">No reviews yet, login to add a review.</span>
+                <span className="px-3">No reviews yet, login to add a review.</span>
               )}
               {showCreateReview && (
                 <div className="p-4">
