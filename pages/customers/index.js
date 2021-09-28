@@ -25,7 +25,8 @@ const index = ({ data }) => {
     <>
       <NavigationBar />
       <Container>
-        <Row className="justify-content-center">
+        <h1 className="mb-5 text-center">Customers</h1>
+        <Row className="justify-content-center mb-3">
           {data.customers !== undefined ? (
             data.customers.map((customer) => <Customer key={customer._id} customer={customer} />)
           ) : (

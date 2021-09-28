@@ -20,7 +20,7 @@ const Rental = ({ rental }) => {
   }
 
   const deleteRental = async () => {
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals/${rental._id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals/${rental._id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.token}`,
@@ -32,36 +32,38 @@ const Rental = ({ rental }) => {
 
   return (
     <>
-      {deleted ? (
-        <p>There are no rentals at the moment.</p>
-      ) : (
-        <Col lg={4}>
-          <ListGroup>
-            <ListGroup.Item variant="dark">
-              Book rented by{" "}
-              <span className="fw-bold">
-                {rental.customer.user.firstName} {rental.customer.user.lastName}
-              </span>
-            </ListGroup.Item>
+      <Col lg={4} className={`${deleted && "d-none"} mb-5`}>
+        <ListGroup>
+          <ListGroup.Item variant="dark">
+            Book rented by{" "}
+            <span className="fw-bold">
+              {rental.customer.user.firstName} {rental.customer.user.lastName}
+            </span>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            Title: <span className="fw-bold">{rental.book.title}</span>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            Author: <span className="fw-bold">{rental.book.author}</span>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            Date out: <span className="fw-bold">{formattedDate(new Date(rental.dateOut))}</span>
+          </ListGroup.Item>
+          <ListGroup.Item>
+            Available:{" "}
+            <span className="fw-bold">
+              {formattedDate(new Date(new Date(rental.dateOut).setMonth(new Date(rental.dateOut).getMonth() + 1)))}
+            </span>
+          </ListGroup.Item>
+          {isLoggedIn && rental.customer.user._id === auth.userId && (
             <ListGroup.Item>
-              Title: <span className="fw-bold">{rental.book.title}</span>
+              <Button variant="primary" onClick={deleteRental}>
+                Return this book
+              </Button>
             </ListGroup.Item>
-            <ListGroup.Item>
-              Author: <span className="fw-bold">{rental.book.author}</span>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              Date out: <span className="fw-bold">{formattedDate(new Date(rental.dateOut))}</span>
-            </ListGroup.Item>
-            {isLoggedIn && (
-              <ListGroup.Item>
-                <Button variant="primary" onClick={deleteRental}>
-                  Return this book
-                </Button>
-              </ListGroup.Item>
-            )}
-          </ListGroup>
-        </Col>
-      )}
+          )}
+        </ListGroup>
+      </Col>
     </>
   );
 };

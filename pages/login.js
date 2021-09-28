@@ -59,6 +59,7 @@ const login = ({ data }) => {
     <div>
       <NavigationBar />
       <Container>
+        <h1 className="mb-5 text-center">Login</h1>
         <Row className="justify-content-center align-items-center">
           <Col xs lg="4">
             <Form onSubmit={loginUser}>

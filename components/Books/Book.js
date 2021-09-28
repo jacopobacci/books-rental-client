@@ -3,7 +3,7 @@ import { Card, Col, ListGroup, ListGroupItem } from "react-bootstrap";
 import Reviews from "../Reviews/Reviews";
 import BookButtons from "./BookButtons";
 import { AuthContext } from "../../shared/context/auth-context";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
 const Book = ({ book }) => {
   const auth = useContext(AuthContext);
@@ -12,6 +12,32 @@ const Book = ({ book }) => {
   const [showBook, setShowBook] = useState(true);
   const [bookAvailable, setBookAvailable] = useState(book.isAvailable);
   const [dateOut, setDateOut] = useState("");
+
+  function formattedDate(d) {
+    let month = String(d.getMonth() + 1);
+    let day = String(d.getDate());
+    const year = String(d.getFullYear());
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return `${day}/${month}/${year}`;
+  }
+
+  useEffect(() => {
+    const fetchRentals = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals`);
+      const data = await res.json();
+      if (data.rentals) {
+        return data.rentals.map((r) => {
+          if (r.book._id === book._id) {
+            setDateOut(formattedDate(new Date(r.dateOut)));
+          }
+        });
+      }
+    };
+    fetchRentals();
+  }, []);
 
   return (
     <>
@@ -39,8 +65,8 @@ const Book = ({ book }) => {
             </ListGroupItem>
             <ListGroupItem>
               Available {bookAvailable ? <i className="fas fa-check-circle"></i> : <i className="fas fa-times-circle"></i>}
-              {dateOut && <span className="ps-3">Date out: {dateOut}</span>}
             </ListGroupItem>
+            {dateOut && <ListGroupItem>Date out: {dateOut}</ListGroupItem>}
           </ListGroup>
           <Reviews book={book} />
           {isLoggedIn && (

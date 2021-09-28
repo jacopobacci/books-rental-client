@@ -55,7 +55,7 @@ const create = ({ genresData }) => {
         },
         method: "POST",
       });
-      router.push("/customers");
+      router.push("/books");
     }
   };
 

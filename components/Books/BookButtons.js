@@ -5,21 +5,6 @@ import { Button, ButtonGroup } from "react-bootstrap";
 import { AuthContext } from "../../shared/context/auth-context";
 import Delete from "./Delete";
 
-// export async function getStaticProps(context) {
-//   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`);
-//   const data = await res.json();
-
-//   if (!data) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-
-//   return {
-//     props: { data }, // will be passed to the page component as props
-//   };
-// }
-
 const BookButtons = ({ book, setShowBook, setBookAvailable, setDateOut }) => {
   const auth = useContext(AuthContext);
   const router = useRouter();
@@ -40,13 +25,8 @@ const BookButtons = ({ book, setShowBook, setBookAvailable, setDateOut }) => {
 
   const createRental = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals`, {
-      body: JSON.stringify({
-        book: book._id,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.token}`,
-      },
+      body: JSON.stringify({ book: book._id }),
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${auth.token}` },
       method: "POST",
     });
     const result = await res.json();
