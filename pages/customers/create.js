@@ -73,9 +73,9 @@ const create = ({ genresData }) => {
     <div>
       <NavigationBar />
       <Container>
-        <Row className="justify-content-center align-items-center">
+        <h1 className="mb-5 text-center">Create new customer</h1>
+        <Row className="justify-content-center align-items-center mb-5">
           <Col xs lg="4">
-            <h1 className="mb-3">Create a customer profile.</h1>
             <Form noValidate validated={validated} onSubmit={createCustomer}>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>Street</Form.Label>
@@ -144,7 +144,7 @@ const create = ({ genresData }) => {
                 ))}
               </Form.Group>
               <Button variant="primary" type="submit" className="me-3">
-                Create Customer
+                Create
               </Button>
             </Form>
           </Col>

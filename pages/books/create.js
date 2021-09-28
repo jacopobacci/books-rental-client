@@ -9,7 +9,7 @@ export async function getStaticProps(context) {
   const genresData = await res.json();
 
   return {
-    props: { genresData }, // will be passed to the page component as props
+    props: { genresData },
   };
 }
 
@@ -49,7 +49,8 @@ const create = ({ genresData }) => {
     <div>
       <NavigationBar />
       <Container>
-        <Row className="justify-content-center align-items-center">
+        <h1 className="mb-5 text-center">Create new book</h1>
+        <Row className="justify-content-center align-items-center mb-5">
           <Col xs lg="4">
             <Form onSubmit={createBook}>
               <Form.Group className="mb-3" controlId="title">
@@ -80,7 +81,7 @@ const create = ({ genresData }) => {
                 <Form.Control as="textarea" name="description" placeholder="Enter description" rows={3} />
               </Form.Group>
               <Button variant="primary" type="submit" className="me-3">
-                Create Book
+                Create
               </Button>
             </Form>
           </Col>

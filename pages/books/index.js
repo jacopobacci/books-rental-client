@@ -26,6 +26,7 @@ const index = ({ booksData }) => {
     <>
       <NavigationBar />
       <Container>
+        <h1 className="mb-5 text-center">All books</h1>
         <Row className="justify-content-center">
           {booksData.books.map((book) => (
             <Book key={book._id} book={book} />

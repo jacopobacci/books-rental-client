@@ -27,12 +27,11 @@ const index = ({ data }) => {
     <>
       <NavigationBar />
       <Container>
+        <h1 className="mb-5 text-center">All genres</h1>
+
         <Row className="justify-content-center">
           <Col xs lg={6}>
-            <ListGroup>
-              <ListGroup.Item as="li" active>
-                Genres
-              </ListGroup.Item>
+            <ListGroup className="border-0">
               {data.genres.map((genre) => (
                 <Genre key={genre._id} genre={genre} />
               ))}

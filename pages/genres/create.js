@@ -16,30 +16,31 @@ const create = () => {
 
   const createGenre = async (evt) => {
     evt.preventDefault();
+
     const form = evt.currentTarget;
     if (form.checkValidity() === false) {
       evt.stopPropagation();
     }
     setValidated(true);
-    if (validated) {
-      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`, {
-        body: JSON.stringify({
-          name: evt.target.name.value,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-        method: "POST",
-      });
-      router.push("/genres");
-    }
+
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`, {
+      body: JSON.stringify({
+        name: evt.target.name.value,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
+      method: "POST",
+    });
+    router.push("/genres");
   };
 
   return (
     <div>
       <NavigationBar />
       <Container>
+        <h1 className="mb-5 text-center">Create new genre</h1>
         <Row className="justify-content-center align-items-center">
           <Col xs lg="4">
             <Form noValidate validated={validated} onSubmit={createGenre}>
@@ -48,7 +49,7 @@ const create = () => {
                 <Form.Control type="text" placeholder="Enter genre name" name="name" autoComplete="name" required />
               </Form.Group>
               <Button variant="primary" type="submit" className="me-3">
-                Create Genre
+                Create
               </Button>
             </Form>
           </Col>

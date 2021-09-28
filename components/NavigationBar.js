@@ -22,7 +22,7 @@ const NavigationBar = () => {
   }, []);
 
   return (
-    <Navbar bg="light" expand="lg" className="mb-5 py-3">
+    <Navbar bg="light" expand="lg" className="mb-5 py-3 text-center">
       <Container>
         <Image src="/books-rental.png" width={50} height={50} alt="Books Rental Logo" />
         <Link href="/">
