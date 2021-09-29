@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext, useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
 
@@ -48,24 +49,23 @@ const create = ({ genresData }) => {
       evt.stopPropagation();
     }
     setValidated(true);
-    if (validated) {
-      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers`, {
-        body: JSON.stringify({
-          street: customer.street,
-          streetNumber: customer.streetNumber,
-          postalCode: customer.postalCode,
-          city: customer.city,
-          phone: customer.phone,
-          favouriteGenres: customer.favouriteGenres,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-        method: "POST",
-      });
-      router.push("/books");
-    }
+
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers`, {
+      body: JSON.stringify({
+        street: customer.street,
+        streetNumber: customer.streetNumber,
+        postalCode: customer.postalCode,
+        city: customer.city,
+        phone: customer.phone,
+        favouriteGenres: customer.favouriteGenres,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
+      method: "POST",
+    });
+    router.push("/books");
   };
 
   const handleChange = (evt) => {
@@ -85,7 +85,7 @@ const create = ({ genresData }) => {
   return (
     <div>
       <NavigationBar />
-      <Container>
+      <Container className="min-vh-100">
         <h1 className="mb-5 text-center">Create new customer</h1>
         <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
           <Col xs lg="4" className="bg-white p-3 rounded">
@@ -163,6 +163,7 @@ const create = ({ genresData }) => {
           </Col>
         </Row>
       </Container>
+      <Footer />
     </div>
   );
 };

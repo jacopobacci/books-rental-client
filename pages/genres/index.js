@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Col, Container, ListGroup, Row } from "react-bootstrap";
+import Footer from "../../components/Footer";
 import Genre from "../../components/Genres/Genre";
 import NavigationBar from "../../components/NavigationBar";
 
@@ -17,7 +18,7 @@ const index = ({ data }) => {
   return (
     <>
       <NavigationBar />
-      <Container>
+      <Container className="min-vh-100">
         <h1 className="mb-5 text-center">All genres</h1>
         <Row className="justify-content-center">
           <Col xs lg={6}>
@@ -32,6 +33,7 @@ const index = ({ data }) => {
           </Col>
         </Row>
       </Container>
+      <Footer />
     </>
   );
 };

@@ -26,7 +26,7 @@ const NavigationBar = () => {
       <Container>
         <Image src="/books-rental.png" width={50} height={50} alt="Books Rental Logo" />
         <Link href="/">
-          <Navbar.Brand href="/" className="ps-3">
+          <Navbar.Brand href="/" className="ps-2">
             Books Rental
           </Navbar.Brand>
         </Link>
@@ -66,7 +66,7 @@ const NavigationBar = () => {
           <Nav>
             {isLoggedIn ? (
               <>
-                <Navbar.Text className="pe-4">{myName}</Navbar.Text>
+                <Navbar.Text className="pe-lg-4">{myName}</Navbar.Text>
                 <Button variant="danger" className="float-end" onClick={auth.logout}>
                   Logout
                 </Button>

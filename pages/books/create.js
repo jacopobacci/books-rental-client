@@ -17,6 +17,7 @@ export async function getStaticProps(context) {
 const create = ({ genresData }) => {
   const [loaded, setLoaded] = useState(false);
   const router = useRouter();
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -34,25 +35,27 @@ const create = ({ genresData }) => {
 
   const createBook = async (evt) => {
     evt.preventDefault();
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`, {
-        body: JSON.stringify({
-          title: evt.target.title.value,
-          author: evt.target.author.value,
-          image: evt.target.image.value,
-          genre: evt.target.genre.value,
-          description: evt.target.description.value,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-        method: "POST",
-      });
-      router.push("/books");
-    } catch (error) {
-      console.log(error);
+    const form = evt.currentTarget;
+    if (form.checkValidity() === false) {
+      evt.stopPropagation();
     }
+    setValidated(true);
+
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`, {
+      body: JSON.stringify({
+        title: evt.target.title.value,
+        author: evt.target.author.value,
+        image: evt.target.image.value,
+        genre: evt.target.genre.value,
+        description: evt.target.description.value,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
+      method: "POST",
+    });
+    router.push("/books");
   };
 
   if (!loaded) {
@@ -62,11 +65,11 @@ const create = ({ genresData }) => {
   return (
     <div>
       <NavigationBar />
-      <Container>
+      <Container className="min-vh-100">
         <h1 className="mb-5 text-center">Create new book</h1>
         <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
           <Col xs lg="4" className="bg-white p-3 rounded">
-            <Form onSubmit={createBook}>
+            <Form noValidate validated={validated} onSubmit={createBook}>
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="text" placeholder="Enter title" name="title" autoComplete="name" required />
@@ -81,7 +84,7 @@ const create = ({ genresData }) => {
               </Form.Group>
               <Form.Group className="mb-3" controlId="genre">
                 <Form.Label>Genre</Form.Label>
-                <Form.Select aria-label="Select genre" name="genre">
+                <Form.Select aria-label="Select genre" name="genre" required>
                   <option>Select a genre...</option>
                   {genresData.genres.map((genre) => (
                     <option key={genre._id} value={genre.name}>
@@ -92,7 +95,7 @@ const create = ({ genresData }) => {
               </Form.Group>
               <Form.Group className="mb-3" controlId="description">
                 <Form.Label>Description</Form.Label>
-                <Form.Control as="textarea" name="description" placeholder="Enter description" rows={3} />
+                <Form.Control as="textarea" name="description" placeholder="Enter description" rows={3} required />
               </Form.Group>
               <Button variant="primary" type="submit" className="me-3">
                 Create

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useContext, useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
 
@@ -52,7 +53,7 @@ const create = () => {
   return (
     <div>
       <NavigationBar />
-      <Container>
+      <Container className="min-vh-100">
         <h1 className="mb-5 text-center">Create new genre</h1>
         <Row className="justify-content-center align-items-center" style={{ padding: "0px 12px" }}>
           <Col lg="4" className="bg-white p-3 rounded">
@@ -68,6 +69,7 @@ const create = () => {
           </Col>
         </Row>
       </Container>
+      <Footer />
     </div>
   );
 };

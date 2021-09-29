@@ -10,6 +10,7 @@ const Update = () => {
   const router = useRouter();
   const auth = useContext(AuthContext);
   const { isLoggedIn } = auth;
+  const [validated, setValidated] = useState(false);
 
   const { bookId } = router.query;
   const [book, setBook] = useState({ title: "", author: "", image: "", genre: "", description: "" });
@@ -40,25 +41,26 @@ const Update = () => {
 
   const updateBook = async (evt) => {
     evt.preventDefault();
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books/${bookId}`, {
-        body: JSON.stringify({
-          title: book.title,
-          author: book.author,
-          image: book.image,
-          genre: book.genre,
-          description: book.description,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-        method: "PUT",
-      });
-      router.push("/books");
-    } catch (error) {
-      console.log(error);
+    const form = evt.currentTarget;
+    if (form.checkValidity() === false) {
+      evt.stopPropagation();
     }
+    setValidated(true);
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books/${bookId}`, {
+      body: JSON.stringify({
+        title: book.title,
+        author: book.author,
+        image: book.image,
+        genre: book.genre,
+        description: book.description,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
+      method: "PUT",
+    });
+    router.push("/books");
   };
 
   const handleChange = (evt) => {
@@ -69,9 +71,9 @@ const Update = () => {
   return (
     <div>
       <NavigationBar />
-      <Container>
-        <Row className="justify-content-center align-items-center">
-          <Col xs lg="4">
+      <Container className="min-vh-100">
+        <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
+          <Col xs lg="4" className="bg-white p-3 rounded">
             <Form onSubmit={updateBook}>
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Title</Form.Label>

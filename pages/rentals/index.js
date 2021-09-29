@@ -1,9 +1,10 @@
 import React from "react";
 import { Container, Row } from "react-bootstrap";
+import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import Rental from "../../components/Rentals/Rental";
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals`);
   const rentalsData = await res.json();
   return {
@@ -15,7 +16,7 @@ const index = ({ rentalsData }) => {
   return (
     <>
       <NavigationBar />
-      <Container>
+      <Container className="min-vh-100">
         <h1 className="mb-5 text-center">Rentals</h1>
         <Row className="justify-content-center">
           {!rentalsData.error ? (
@@ -25,6 +26,7 @@ const index = ({ rentalsData }) => {
           )}
         </Row>
       </Container>
+      <Footer />
     </>
   );
 };

@@ -1,5 +1,6 @@
 import { Container, Row } from "react-bootstrap";
 import Customer from "../../components/Customers/Customer.js";
+import Footer from "../../components/Footer.js";
 import NavigationBar from "../../components/NavigationBar";
 
 export async function getStaticProps(context) {
@@ -24,7 +25,7 @@ const index = ({ data }) => {
   return (
     <>
       <NavigationBar />
-      <Container>
+      <Container className="min-vh-100">
         <h1 className="mb-5 text-center">Customers</h1>
         <Row className="justify-content-center mb-3">
           {data.customers !== undefined ? (
@@ -34,6 +35,7 @@ const index = ({ data }) => {
           )}
         </Row>
       </Container>
+      <Footer />
     </>
   );
 };

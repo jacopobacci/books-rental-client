@@ -5,7 +5,7 @@ import BookButtons from "./BookButtons";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useContext, useState, useEffect } from "react";
 
-const Book = ({ book }) => {
+const Book = ({ book, rentalsData }) => {
   const auth = useContext(AuthContext);
   const { isLoggedIn } = auth;
 
@@ -25,18 +25,13 @@ const Book = ({ book }) => {
   }
 
   useEffect(() => {
-    const fetchRentals = async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals`);
-      const data = await res.json();
-      if (data.rentals) {
-        return data.rentals.map((r) => {
-          if (r.book._id === book._id) {
-            setDateOut(formattedDate(new Date(r.dateOut)));
-          }
-        });
-      }
-    };
-    fetchRentals();
+    if (!rentalsData.error) {
+      return rentalsData.rentals.map((r) => {
+        if (r.book._id === book._id) {
+          setDateOut(formattedDate(new Date(r.dateOut)));
+        }
+      });
+    }
   }, []);
 
   return (
@@ -54,12 +49,13 @@ const Book = ({ book }) => {
         <Card className="mb-5">
           <Card.Img variant="top" src={book.image} />
           <Card.Body>
-            <Card.Title>
-              {book.title} by {book.author}
-            </Card.Title>
+            <Card.Title>{book.title}</Card.Title>
             <Card.Text>{book.description}</Card.Text>
           </Card.Body>
           <ListGroup className="list-group-flush">
+            <ListGroupItem>
+              Author <span className="fw-bold">{book.author}</span>
+            </ListGroupItem>
             <ListGroupItem>
               Genre <span className="fw-bold">{book.genre.name}</span>
             </ListGroupItem>

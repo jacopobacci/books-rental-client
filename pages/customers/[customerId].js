@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useContext } from "react";
 import { Form, Button, Row, Container, Col } from "react-bootstrap";
 import { AuthContext } from "../../shared/context/auth-context";
+import Footer from "../../components/Footer";
 
 const UpdateCustomer = () => {
   const router = useRouter();
@@ -37,7 +38,7 @@ const UpdateCustomer = () => {
     getCustomer();
   }, []);
 
-  console.log("AAAAA", customer);
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     const getGenres = async () => {
@@ -50,26 +51,28 @@ const UpdateCustomer = () => {
 
   const updateCustomer = async (evt) => {
     evt.preventDefault();
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers/${customerId}`, {
-        body: JSON.stringify({
-          street: customer.street,
-          streetNumber: customer.streetNumber,
-          postalCode: customer.postalCode,
-          city: customer.city,
-          phone: customer.phone,
-          favouriteGenres: customer.favouriteGenres,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-        method: "PUT",
-      });
-      router.push("/customers");
-    } catch (error) {
-      console.log(error);
+    const form = evt.currentTarget;
+    if (form.checkValidity() === false) {
+      evt.stopPropagation();
     }
+    setValidated(true);
+
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers/${customerId}`, {
+      body: JSON.stringify({
+        street: customer.street,
+        streetNumber: customer.streetNumber,
+        postalCode: customer.postalCode,
+        city: customer.city,
+        phone: customer.phone,
+        favouriteGenres: customer.favouriteGenres,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
+      method: "PUT",
+    });
+    router.push("/customers");
   };
 
   const handleChange = (evt) => {
@@ -89,9 +92,9 @@ const UpdateCustomer = () => {
   return (
     <div>
       <NavigationBar />
-      <Container>
-        <Row className="justify-content-center align-items-center">
-          <Col xs lg="4">
+      <Container className="min-vh-100">
+        <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
+          <Col xs lg="4" className="bg-white p-3 rounded">
             <Form onSubmit={updateCustomer}>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>Street</Form.Label>
@@ -169,6 +172,7 @@ const UpdateCustomer = () => {
           </Col>
         </Row>
       </Container>
+      <Footer />
     </div>
   );
 };
