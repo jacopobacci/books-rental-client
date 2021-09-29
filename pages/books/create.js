@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
 
@@ -14,13 +15,22 @@ export async function getStaticProps(context) {
 }
 
 const create = ({ genresData }) => {
+  const [loaded, setLoaded] = useState(false);
   const router = useRouter();
-  const auth = useContext(AuthContext);
-  const { isLoggedIn } = auth;
 
   useEffect(() => {
-    if (!isLoggedIn) router.push("/login");
+    if (typeof window !== "undefined") {
+      const storedData = JSON.parse(localStorage.getItem("userData"));
+      const isLoggedIn = storedData && storedData.token;
+      if (!isLoggedIn) {
+        router.push("/login");
+      } else {
+        setLoaded(true);
+      }
+    }
   }, []);
+
+  const auth = useContext(AuthContext);
 
   const createBook = async (evt) => {
     evt.preventDefault();
@@ -45,13 +55,17 @@ const create = ({ genresData }) => {
     }
   };
 
+  if (!loaded) {
+    return <div></div>;
+  }
+
   return (
     <div>
       <NavigationBar />
       <Container>
         <h1 className="mb-5 text-center">Create new book</h1>
-        <Row className="justify-content-center align-items-center mb-5">
-          <Col xs lg="4">
+        <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
+          <Col xs lg="4" className="bg-white p-3 rounded">
             <Form onSubmit={createBook}>
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Title</Form.Label>
@@ -87,6 +101,7 @@ const create = ({ genresData }) => {
           </Col>
         </Row>
       </Container>
+      <Footer />
     </div>
   );
 };

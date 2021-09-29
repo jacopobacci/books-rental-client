@@ -3,20 +3,13 @@ import Link from "next/link";
 import NavigationBar from "../components/NavigationBar";
 import jwt from "jsonwebtoken";
 import { AuthContext } from "../shared/context/auth-context";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
-export async function getStaticProps(context) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers`);
-  const data = await res.json();
-  return {
-    props: { data }, // will be passed to the page component as props
-  };
-}
 
 const login = ({ data }) => {
   const router = useRouter();
   const auth = useContext(AuthContext);
+  const [uId, setUId] = useState("");
 
   const loginUser = async (evt) => {
     evt.preventDefault();
@@ -33,26 +26,10 @@ const login = ({ data }) => {
     });
 
     const result = await res.json();
-    const { token } = result;
-    console.log(data);
-    if (token) {
-      const json = jwt.decode(token);
-      const { userId } = json;
-      auth.login(userId, token);
-      if (data.error) {
-        return router.push("/customers/create");
-      } else {
-        data.customers.map((customer) => {
-          if (customer.user && customer.user._id === userId) {
-            return router.push("/books");
-          } else {
-            return router.push("/customers/create");
-          }
-        });
-      }
-    } else {
-      router.push("/login");
-    }
+    const { token, userId } = result;
+    auth.login(userId, token);
+    setUId(userId);
+    return router.push("/books");
   };
 
   return (
@@ -60,8 +37,8 @@ const login = ({ data }) => {
       <NavigationBar />
       <Container>
         <h1 className="mb-5 text-center">Login</h1>
-        <Row className="justify-content-center align-items-center">
-          <Col xs lg="4">
+        <Row className="justify-content-center align-items-center" style={{ padding: "0px 12px" }}>
+          <Col xs lg="4" className="bg-white p-3 rounded">
             <Form onSubmit={loginUser}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>

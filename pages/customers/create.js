@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
@@ -14,9 +14,22 @@ export async function getStaticProps(context) {
 }
 
 const create = ({ genresData }) => {
+  const [loaded, setLoaded] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedData = JSON.parse(localStorage.getItem("userData"));
+      const isLoggedIn = storedData && storedData.token;
+      if (!isLoggedIn) {
+        router.push("/login");
+      } else {
+        setLoaded(true);
+      }
+    }
+  }, []);
+
   const auth = useContext(AuthContext);
-  const { isLoggedIn } = auth;
 
   const [customer, setCustomer] = useState({
     street: "",
@@ -27,10 +40,6 @@ const create = ({ genresData }) => {
     favouriteGenres: [],
   });
   const [validated, setValidated] = useState(false);
-
-  useEffect(() => {
-    if (!isLoggedIn) router.push("/login");
-  }, []);
 
   const createCustomer = async (evt) => {
     evt.preventDefault();
@@ -69,13 +78,17 @@ const create = ({ genresData }) => {
     customer.favouriteGenres.push(evt.target.value);
   };
 
+  if (!loaded) {
+    return <div></div>;
+  }
+
   return (
     <div>
       <NavigationBar />
       <Container>
         <h1 className="mb-5 text-center">Create new customer</h1>
-        <Row className="justify-content-center align-items-center mb-5">
-          <Col xs lg="4">
+        <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
+          <Col xs lg="4" className="bg-white p-3 rounded">
             <Form noValidate validated={validated} onSubmit={createCustomer}>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>Street</Form.Label>

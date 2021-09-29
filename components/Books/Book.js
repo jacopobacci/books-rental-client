@@ -51,7 +51,7 @@ const Book = ({ book }) => {
         />
       </Head>
       <Col lg={4} className={`${!showBook && "d-none"}`}>
-        <Card className="mb-5 border-0">
+        <Card className="mb-5">
           <Card.Img variant="top" src={book.image} />
           <Card.Body>
             <Card.Title>

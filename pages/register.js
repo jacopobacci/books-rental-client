@@ -41,8 +41,8 @@ const register = () => {
       <NavigationBar />
       <Container>
         <h1 className="mb-5 text-center">Register</h1>
-        <Row className="justify-content-center align-items-center">
-          <Col xs lg="4">
+        <Row className="justify-content-center align-items-center" style={{ padding: "0px 12px" }}>
+          <Col xs lg="4" className="bg-white p-3 rounded">
             <Form onSubmit={registerUser}>
               <Form.Group className="mb-3" controlId="firstName">
                 <Form.Label>First Name</Form.Label>

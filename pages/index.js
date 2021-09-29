@@ -1,6 +1,7 @@
 import Head from "next/head";
 import NavigationBar from "../components/NavigationBar";
 import HomePage from "../components/HomePage";
+import Footer from "../components/Footer";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       </Head>
       <NavigationBar />
       <HomePage />
+      <Footer />
     </>
   );
 }

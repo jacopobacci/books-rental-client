@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useContext } from "react";
 import { Form, Button, Row, Container, Col } from "react-bootstrap";
 import { AuthContext } from "../../shared/context/auth-context";
+import Footer from "../../components/Footer";
 
 const Update = () => {
   const router = useRouter();
@@ -136,6 +137,7 @@ const Update = () => {
           </Col>
         </Row>
       </Container>
+      <Footer />
     </div>
   );
 };
