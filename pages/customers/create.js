@@ -5,7 +5,7 @@ import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
   const genresData = await res.json();
 
@@ -17,6 +17,7 @@ export async function getStaticProps(context) {
 const create = ({ genresData }) => {
   const [loaded, setLoaded] = useState(false);
   const router = useRouter();
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -40,16 +41,15 @@ const create = ({ genresData }) => {
     phone: "",
     favouriteGenres: [],
   });
-  const [validated, setValidated] = useState(false);
 
   const createCustomer = async (evt) => {
+    setValidated(true);
     evt.preventDefault();
     const form = evt.currentTarget;
     if (form.checkValidity() === false) {
       evt.stopPropagation();
+      return;
     }
-    setValidated(true);
-
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers`, {
       body: JSON.stringify({
         street: customer.street,
@@ -76,6 +76,7 @@ const create = ({ genresData }) => {
   const handleClick = (evt) => {
     evt.preventDefault();
     customer.favouriteGenres.push(evt.target.value);
+    evt.target.setAttribute("disabled", true);
   };
 
   if (!loaded) {
@@ -151,7 +152,7 @@ const create = ({ genresData }) => {
                 <Form.Label>Favorite genres</Form.Label>
                 <br />
                 {genresData.genres.map((genre) => (
-                  <Button key={genre._id} value={genre.name} size="sm" className="me-2 mb-2" onClick={handleClick}>
+                  <Button key={genre._id} value={genre.name} size="sm" variant="dark" className="me-2 mb-2" onClick={handleClick}>
                     {genre.name}
                   </Button>
                 ))}

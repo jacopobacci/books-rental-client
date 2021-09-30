@@ -25,14 +25,13 @@ const create = () => {
   const [validated, setValidated] = useState(false);
 
   const createGenre = async (evt) => {
+    setValidated(true);
     evt.preventDefault();
-
     const form = evt.currentTarget;
     if (form.checkValidity() === false) {
       evt.stopPropagation();
+      return;
     }
-    setValidated(true);
-
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`, {
       body: JSON.stringify({
         name: evt.target.name.value,

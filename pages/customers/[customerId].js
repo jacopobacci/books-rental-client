@@ -13,6 +13,8 @@ const UpdateCustomer = () => {
   const auth = useContext(AuthContext);
   const { isLoggedIn } = auth;
 
+  const [allGenres, setAllGenres] = useState({ genres: [{ _id: "", name: "" }] });
+  const [validated, setValidated] = useState(false);
   const [customer, setCustomer] = useState({
     street: "",
     streetNumber: "",
@@ -21,8 +23,6 @@ const UpdateCustomer = () => {
     phone: "",
     favouriteGenres: [],
   });
-
-  const [allGenres, setAllGenres] = useState({ genres: [{ _id: "", name: "" }] });
 
   useEffect(() => {
     const getCustomer = async () => {
@@ -38,8 +38,6 @@ const UpdateCustomer = () => {
     getCustomer();
   }, []);
 
-  const [validated, setValidated] = useState(false);
-
   useEffect(() => {
     const getGenres = async () => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
@@ -50,13 +48,13 @@ const UpdateCustomer = () => {
   }, []);
 
   const updateCustomer = async (evt) => {
+    setValidated(true);
     evt.preventDefault();
     const form = evt.currentTarget;
     if (form.checkValidity() === false) {
       evt.stopPropagation();
+      return;
     }
-    setValidated(true);
-
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers/${customerId}`, {
       body: JSON.stringify({
         street: customer.street,
@@ -83,6 +81,7 @@ const UpdateCustomer = () => {
   const handleClick = (evt) => {
     evt.preventDefault();
     customer.favouriteGenres.push(evt.target.value);
+    evt.target.setAttribute("disabled", true);
   };
 
   useEffect(() => {
@@ -95,7 +94,7 @@ const UpdateCustomer = () => {
       <Container className="min-vh-100">
         <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
           <Col xs lg="4" className="bg-white p-3 rounded">
-            <Form onSubmit={updateCustomer}>
+            <Form noValidate validated={validated} onSubmit={updateCustomer}>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>Street</Form.Label>
                 <Form.Control
@@ -160,7 +159,7 @@ const UpdateCustomer = () => {
                 <Form.Label>Favorite genres</Form.Label>
                 <br />
                 {allGenres.genres.map((genre) => (
-                  <Button key={genre._id} value={genre.name} size="sm" className="me-2 mb-2" onClick={handleClick}>
+                  <Button key={genre._id} value={genre.name} size="sm" variant="dark" className="me-2 mb-2" onClick={handleClick}>
                     {genre.name}
                   </Button>
                 ))}

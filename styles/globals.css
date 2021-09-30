@@ -21,6 +21,12 @@ a {
   font-family: "Cinzel", serif;
 }
 
+*:focus {
+  outline: none;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
 h1,
 .card {
   text-shadow: -1px -1px 1px white, 1px -1px 1px white, -1px 1px 1px white, 1px 1px 1px white;

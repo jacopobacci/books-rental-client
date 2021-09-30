@@ -10,6 +10,10 @@ const Reviews = ({ book }) => {
 
   const [showCreateReview, setShowCreateReview] = useState(false);
 
+  console.log("AAAA", book.reviews);
+
+  const hasReview = book.reviews.some((review) => review.user._id === auth.userId);
+
   return (
     <Accordion defaultActiveKey="0" className="m-3">
       <Accordion.Item eventKey="1">
@@ -22,6 +26,16 @@ const Reviews = ({ book }) => {
                   {book.reviews.map((review) => (
                     <Review key={review._id} review={review} />
                   ))}
+                  {!hasReview && isLoggedIn && (
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      className="m-2"
+                      onClick={() => (!showCreateReview ? setShowCreateReview(true) : setshowCreateReview(false))}
+                    >
+                      Add review
+                    </Button>
+                  )}
                 </>
               ) : !book.reviews.length && isLoggedIn ? (
                 <Button

@@ -5,27 +5,29 @@ import { useContext, useState } from "react";
 const Update = ({ review, setShowUpdate, setInitReview }) => {
   const auth = useContext(AuthContext);
   const [reviewVal, setReviewVal] = useState({ rating: review.rating, content: review.content });
+  const [validated, setValidated] = useState(false);
 
   const updateReview = async (evt) => {
     evt.preventDefault();
-
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_URL}/api/reviews/${review._id}`, {
-        body: JSON.stringify({
-          rating: reviewVal.rating,
-          content: reviewVal.content,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-        method: "PUT",
-      });
-      setShowUpdate(false);
-      setInitReview(reviewVal);
-    } catch (error) {
-      console.log(error);
+    setValidated(true);
+    const form = evt.currentTarget;
+    if (form.checkValidity() === false) {
+      evt.stopPropagation();
+      return;
     }
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/reviews/${review._id}`, {
+      body: JSON.stringify({
+        rating: reviewVal.rating,
+        content: reviewVal.content,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.token}`,
+      },
+      method: "PUT",
+    });
+    setShowUpdate(false);
+    setInitReview(reviewVal);
   };
 
   const handleChange = (evt) => {
@@ -36,7 +38,7 @@ const Update = ({ review, setShowUpdate, setInitReview }) => {
   return (
     <Row className="justify-content-center align-items-center pt-3">
       <Col>
-        <Form onSubmit={updateReview}>
+        <Form noValidate validated={validated} onSubmit={updateReview}>
           <Form.Group className="mb-3" controlId="rating">
             <Form.Label>Rating</Form.Label>
             <Form.Range value={reviewVal.rating} min={1} max={5} onChange={handleChange} name="rating" required />

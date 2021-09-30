@@ -40,12 +40,13 @@ const Update = () => {
   }, []);
 
   const updateBook = async (evt) => {
+    setValidated(true);
     evt.preventDefault();
     const form = evt.currentTarget;
     if (form.checkValidity() === false) {
       evt.stopPropagation();
+      return;
     }
-    setValidated(true);
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books/${bookId}`, {
       body: JSON.stringify({
         title: book.title,

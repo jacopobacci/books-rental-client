@@ -22,6 +22,7 @@ const Review = ({ review }) => {
 
     return `${day}/${month}/${year}`;
   }
+
   return (
     <div className="border rounded p-2 m-2">
       <Form.Label>Rating</Form.Label>
@@ -36,7 +37,7 @@ const Review = ({ review }) => {
           {review.user.firstName} {review.user.lastName}
         </span>
       </p>
-      {isLoggedIn && (
+      {isLoggedIn && review.user._id === auth.userId && (
         <>
           {" "}
           <ButtonGroup aria-label="Basic example">

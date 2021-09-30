@@ -5,33 +5,24 @@ import NavigationBar from "../../components/NavigationBar";
 
 export async function getStaticProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/customers`);
-  const data = await res.json();
-
-  if (!data) {
-    return {
-      redirect: {
-        destination: "/notfound",
-        permanent: false,
-      },
-    };
-  }
+  const customersData = await res.json();
 
   return {
-    props: { data },
+    props: { customersData },
   };
 }
 
-const index = ({ data }) => {
+const index = ({ customersData }) => {
   return (
     <>
       <NavigationBar />
       <Container className="min-vh-100">
         <h1 className="mb-5 text-center">Customers</h1>
         <Row className="justify-content-center mb-3">
-          {data.customers !== undefined ? (
-            data.customers.map((customer) => <Customer key={customer._id} customer={customer} />)
+          {!customersData.error ? (
+            customersData.customers.map((customer) => <Customer key={customer._id} customer={customer} />)
           ) : (
-            <p>No customers yet.</p>
+            <p className="text-center">{customersData.error}</p>
           )}
         </Row>
       </Container>

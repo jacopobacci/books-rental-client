@@ -66,7 +66,11 @@ const NavigationBar = () => {
           <Nav>
             {isLoggedIn ? (
               <>
-                <Navbar.Text className="pe-lg-4">{myName}</Navbar.Text>
+                <Link href="/me">
+                  <Nav.Link href="/me" className="me-lg-2">
+                    {myName}
+                  </Nav.Link>
+                </Link>
                 <Button variant="danger" className="float-end" onClick={auth.logout}>
                   Logout
                 </Button>

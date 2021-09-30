@@ -5,7 +5,7 @@ import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
   const genresData = await res.json();
 
@@ -34,13 +34,13 @@ const create = ({ genresData }) => {
   const auth = useContext(AuthContext);
 
   const createBook = async (evt) => {
+    setValidated(true);
     evt.preventDefault();
     const form = evt.currentTarget;
     if (form.checkValidity() === false) {
       evt.stopPropagation();
+      return;
     }
-    setValidated(true);
-
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`, {
       body: JSON.stringify({
         title: evt.target.title.value,
