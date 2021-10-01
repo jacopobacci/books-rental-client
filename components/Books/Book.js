@@ -46,7 +46,7 @@ const Book = ({ book, rentalsData }) => {
       </Head>
       <Col lg={4} className={`${!showBook && "d-none"}`}>
         <Card className="mb-5">
-          <Card.Img variant="top" src={book.image} />
+          <Card.Img variant="top" src={book.image} style={{ height: "50vh", objectFit: "contain" }} className="p-3" />
           <Card.Body>
             <Card.Title>{book.title}</Card.Title>
             <Card.Text>{book.description}</Card.Text>
