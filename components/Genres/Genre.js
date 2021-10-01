@@ -18,14 +18,15 @@ const Genre = ({ genre }) => {
       {genreName}
       {isLoggedIn && genre.user === auth.userId && (
         <>
-          <Button variant="danger" className="float-end mx-2" onClick={() => setShowDeleteModal(true)}>
+          <Button variant="danger" className="float-end mx-1" onClick={() => setShowDeleteModal(true)} size="sm">
             Delete
           </Button>
           {showDeleteModal && <Delete setShowDeleteModal={setShowDeleteModal} genre={genre} setShowGenre={setShowGenre} />}
           <Button
             variant="primary"
-            className="float-end mx-2"
+            className="float-end mx-1"
             onClick={() => (!showUpdate ? setShowUpdate(true) : setShowUpdate(false))}
+            size="sm"
           >
             Update
           </Button>
