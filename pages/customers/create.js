@@ -4,6 +4,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
+import Link from "next/link";
 
 export async function getStaticProps() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
@@ -151,11 +152,22 @@ const create = ({ genresData }) => {
               <Form.Group className="mb-3" controlId="formBasicCheckbox">
                 <Form.Label>Favorite genres</Form.Label>
                 <br />
-                {genresData.genres.map((genre) => (
-                  <Button key={genre._id} value={genre.name} size="sm" variant="dark" className="me-2 mb-2" onClick={handleClick}>
-                    {genre.name}
-                  </Button>
-                ))}
+                {genresData.genres ? (
+                  genresData.genres.map((genre) => (
+                    <Button
+                      key={genre._id}
+                      value={genre.name}
+                      size="sm"
+                      variant="dark"
+                      className="me-2 mb-2"
+                      onClick={handleClick}
+                    >
+                      {genre.name}
+                    </Button>
+                  ))
+                ) : (
+                  <Link href="/genres/create">Create a genre</Link>
+                )}
               </Form.Group>
               <Button variant="primary" type="submit" className="me-3">
                 Create

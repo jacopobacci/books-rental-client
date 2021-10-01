@@ -22,14 +22,21 @@ const index = ({ data }) => {
         <h1 className="mb-5 text-center">All genres</h1>
         <Row className="justify-content-center">
           <Col xs lg={6}>
-            <ListGroup className="border-0">
-              {data.genres.map((genre) => (
-                <Genre key={genre._id} genre={genre} />
-              ))}
-              <ListGroup.Item>
-                <Link href="/genres/create">Add new genre</Link>
-              </ListGroup.Item>
-            </ListGroup>
+            {data.error ? (
+              <>
+                <p className="text-center">There aren't still genres...</p>
+                <p className="text-center">
+                  <Link href="/genres/create">Create a genre</Link>
+                </p>
+              </>
+            ) : (
+              <ListGroup className="border-0">
+                {data.genres && data.genres.map((genre) => <Genre key={genre._id} genre={genre} />)}
+                <ListGroup.Item>
+                  <Link href="/genres/create">Add new genre</Link>
+                </ListGroup.Item>
+              </ListGroup>
+            )}
           </Col>
         </Row>
       </Container>

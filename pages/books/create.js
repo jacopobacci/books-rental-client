@@ -4,6 +4,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
+import Link from "next/link";
 
 export async function getStaticProps() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
@@ -84,14 +85,20 @@ const create = ({ genresData }) => {
               </Form.Group>
               <Form.Group className="mb-3" controlId="genre">
                 <Form.Label>Genre</Form.Label>
-                <Form.Select aria-label="Select genre" name="genre" required>
-                  <option>Select a genre...</option>
-                  {genresData.genres.map((genre) => (
-                    <option key={genre._id} value={genre.name}>
-                      {genre.name}
-                    </option>
-                  ))}
-                </Form.Select>
+                {genresData.genres ? (
+                  <Form.Select aria-label="Select genre" name="genre" required>
+                    <option>Select a genre...</option>
+                    {genresData.genres.map((genre) => (
+                      <option key={genre._id} value={genre.name}>
+                        {genre.name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                ) : (
+                  <p>
+                    <Link href="/genres/create">Create a genre</Link>
+                  </p>
+                )}
               </Form.Group>
               <Form.Group className="mb-3" controlId="description">
                 <Form.Label>Description</Form.Label>

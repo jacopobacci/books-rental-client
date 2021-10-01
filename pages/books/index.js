@@ -4,6 +4,7 @@ import Search from "../../components/Books/Search";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
 import { useState } from "react";
+import Link from "next/link";
 
 export async function getServerSideProps() {
   const [booksRes, rentalsRes] = await Promise.all([
@@ -23,17 +24,23 @@ const index = ({ booksData, rentalsData }) => {
       <Container className="min-vh-100">
         <h1 className="mb-5 text-center">All books</h1>
         <Search setSearchResults={setSearchResults} />
-        {searchResults.books ? (
+        {searchResults.error || booksData.error ? (
+          <>
+            <p className="text-center">{searchResults.error || booksData.error}</p>
+            {booksData.error && (
+              <p className="text-center">
+                <Link href="/books/create">Create a book</Link>
+              </p>
+            )}
+          </>
+        ) : searchResults.books ? (
           <Row className="justify-content-center">
-            {searchResults.books.map((book) => (
-              <Book key={book._id} book={book} rentalsData={rentalsData} />
-            ))}
+            {searchResults.books &&
+              searchResults.books.map((book) => <Book key={book._id} book={book} rentalsData={rentalsData} />)}
           </Row>
         ) : (
           <Row className="justify-content-center">
-            {booksData.books.map((book) => (
-              <Book key={book._id} book={book} rentalsData={rentalsData} />
-            ))}
+            {booksData.books && booksData.books.map((book) => <Book key={book._id} book={book} rentalsData={rentalsData} />)}
           </Row>
         )}
       </Container>
