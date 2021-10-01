@@ -23,9 +23,8 @@ const Book = ({ book, rentalsData }) => {
 
     return `${day}/${month}/${year}`;
   }
-
   useEffect(() => {
-    if (!rentalsData.error) {
+    if (rentalsData.rentals && !rentalsData.error) {
       return rentalsData.rentals.map((r) => {
         if (r.book._id === book._id) {
           setDateOut(formattedDate(new Date(r.dateOut)));

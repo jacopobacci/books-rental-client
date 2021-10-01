@@ -6,19 +6,19 @@ import NavigationBar from "../../components/NavigationBar";
 import { AuthContext } from "../../shared/context/auth-context";
 import Link from "next/link";
 
-export async function getStaticProps() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
-  const genresData = await res.json();
-
-  return {
-    props: { genresData },
-  };
-}
-
-const create = ({ genresData }) => {
+const create = () => {
   const [loaded, setLoaded] = useState(false);
   const router = useRouter();
   const [validated, setValidated] = useState(false);
+  const [genresData, setGenresData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
+      setGenresData(await res.json());
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

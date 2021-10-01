@@ -4,17 +4,19 @@ import { Col, Container, ListGroup, Row } from "react-bootstrap";
 import Footer from "../../components/Footer";
 import Genre from "../../components/Genres/Genre";
 import NavigationBar from "../../components/NavigationBar";
+import { useState, useEffect } from "react";
 
-export async function getStaticProps(context) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
-  const data = await res.json();
+const index = () => {
+  const [genresData, setGenresData] = useState([]);
 
-  return {
-    props: { data },
-  };
-}
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
+      setGenresData(await res.json());
+    };
+    fetchData();
+  }, []);
 
-const index = ({ data }) => {
   return (
     <>
       <NavigationBar />
@@ -22,7 +24,7 @@ const index = ({ data }) => {
         <h1 className="mb-5 text-center">All genres</h1>
         <Row className="justify-content-center">
           <Col xs lg={6}>
-            {data.error ? (
+            {genresData.error ? (
               <>
                 <p className="text-center">There aren't still genres...</p>
                 <p className="text-center">
@@ -31,7 +33,7 @@ const index = ({ data }) => {
               </>
             ) : (
               <ListGroup className="border-0">
-                {data.genres && data.genres.map((genre) => <Genre key={genre._id} genre={genre} />)}
+                {genresData.genres && genresData.genres.map((genre) => <Genre key={genre._id} genre={genre} />)}
                 <ListGroup.Item>
                   <Link href="/genres/create">Add new genre</Link>
                 </ListGroup.Item>

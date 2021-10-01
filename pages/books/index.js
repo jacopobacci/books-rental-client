@@ -3,21 +3,30 @@ import Book from "../../components/Books/Book";
 import Search from "../../components/Books/Search";
 import Footer from "../../components/Footer";
 import NavigationBar from "../../components/NavigationBar";
-import { useState } from "react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
-export async function getServerSideProps() {
-  const [booksRes, rentalsRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`),
-    fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals`),
-  ]);
-  const [booksData, rentalsData] = await Promise.all([booksRes.json(), rentalsRes.json()]);
-  return { props: { booksData, rentalsData } };
-}
-
-const index = ({ booksData, rentalsData }) => {
+const index = () => {
   const [searchResults, setSearchResults] = useState([]);
-  console.log(searchResults);
+  const [booksData, setBooksData] = useState([]);
+  const [rentalsData, setRentalsData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`);
+      setBooksData(await res.json());
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals`);
+      setRentalsData(await res.json());
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <NavigationBar />

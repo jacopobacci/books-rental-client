@@ -1,11 +1,8 @@
-import React from "react";
-import Update from "./Update";
-import { useState } from "react";
-import { ListGroup, Button } from "react-bootstrap";
-import Delete from "./Delete";
+import React, { useContext, useState } from "react";
+import { Button, ListGroup } from "react-bootstrap";
 import { AuthContext } from "../../shared/context/auth-context";
-import { useContext } from "react";
-import ErrorNotification from "../../shared/components/ErrorNotification";
+import Delete from "./Delete";
+import Update from "./Update";
 
 const Genre = ({ genre }) => {
   const auth = useContext(AuthContext);
