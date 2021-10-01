@@ -6,7 +6,7 @@ const HomePage = () => {
   return (
     <div className="bg-white d-inline rounded">
       <h1 className="text-center pt-5">Rent a book, share your thoughts.</h1>
-      <Row className="justify-content-center">
+      <Row className="justify-content-center g-0">
         <Col lg={6}>
           <Image src="/books-rental.png" width={780} height={600} alt="Books Rental Home" />
         </Col>
