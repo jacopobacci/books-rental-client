@@ -9,14 +9,24 @@ const register = () => {
   const router = useRouter();
   const auth = useContext(AuthContext);
   const [validated, setValidated] = useState(false);
+  const [isPswValid, setIsPswValid] = useState(false);
 
   const registerUser = async (evt) => {
+    // evt.preventDefault();
+
+    // const form = evt.currentTarget;
+    // if (form.checkValidity() === false && !isPswValid) {
+    //   evt.stopPropagation();
+    //   return;
+    // }
+    // setValidated(true);
+    setValidated(true);
     evt.preventDefault();
     const form = evt.currentTarget;
-    if (form.checkValidity() === false) {
+    if (form.checkValidity() === false && !isPswValid) {
       evt.stopPropagation();
+      return;
     }
-    setValidated(true);
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/users`, {
       body: JSON.stringify({
         firstName: evt.target.firstName.value,
@@ -34,6 +44,12 @@ const register = () => {
     const { userId, token } = result;
     auth.login(userId, token);
     router.push("/");
+  };
+
+  const handleChange = (evt) => {
+    evt.preventDefault();
+    const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
+    setIsPswValid(regex.test(evt.target.value));
   };
 
   return (
@@ -58,7 +74,23 @@ const register = () => {
               </Form.Group>
               <Form.Group className="mb-3" controlId="assword">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" name="password" autoComplete="name" required />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  autoComplete="name"
+                  onChange={handleChange}
+                  required
+                />
+                {!isPswValid ? (
+                  <Form.Text className="text-danger" style={{ fontSize: ".8rem" }}>
+                    Min 8 - 1 lowercase and 1 uppercase - 1 numeric - 1 special
+                  </Form.Text>
+                ) : (
+                  <Form.Text className="text-success" style={{ fontSize: ".8rem" }}>
+                    Looks good!
+                  </Form.Text>
+                )}
               </Form.Group>
               <Button variant="primary" type="submit" className="me-3">
                 Register
