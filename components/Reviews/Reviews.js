@@ -10,8 +10,6 @@ const Reviews = ({ book }) => {
 
   const [showCreateReview, setShowCreateReview] = useState(false);
 
-  console.log("AAAA", book.reviews);
-
   const hasReview = book.reviews.some((review) => review.user._id === auth.userId);
 
   return (
@@ -47,7 +45,7 @@ const Reviews = ({ book }) => {
                   Add review
                 </Button>
               ) : (
-                <span className="px-3">No reviews yet, login to add a review.</span>
+                <span className="px-3 te">No reviews yet, login to add a review.</span>
               )}
               {showCreateReview && (
                 <div className="p-4">
