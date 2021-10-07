@@ -15,18 +15,10 @@ const index = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`);
-      setBooksData(await res.json());
-      setIsLoading(false);
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals`);
-      setRentalsData(await res.json());
+      const resBooks = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`);
+      const resRentals = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals`);
+      setBooksData(await resBooks.json());
+      setRentalsData(await resRentals.json());
       setIsLoading(false);
     };
     fetchData();

@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../shared/context/auth-context";
 import { useAuth } from "../shared/hooks/auth-hook";
 import Router from "next/router";

@@ -1,5 +1,5 @@
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
 
 const Search = ({ setSearchResults }) => {
   const [query, setQuery] = useState("");

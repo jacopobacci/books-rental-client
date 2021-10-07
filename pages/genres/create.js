@@ -24,7 +24,7 @@ const create = () => {
   const auth = useContext(AuthContext);
   const [validated, setValidated] = useState(false);
 
-  const createGenre = async (evt) => {
+  const handleSubmit = async (evt) => {
     setValidated(true);
     evt.preventDefault();
     const form = evt.currentTarget;
@@ -56,7 +56,7 @@ const create = () => {
         <h1 className="mb-5 text-center">Create new genre</h1>
         <Row className="justify-content-center align-items-center" style={{ padding: "0px 12px" }}>
           <Col lg="4" className="bg-white p-3 rounded">
-            <Form noValidate validated={validated} onSubmit={createGenre}>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="name">
                 <Form.Label>Genre</Form.Label>
                 <Form.Control type="text" placeholder="Enter genre name" name="name" autoComplete="name" required />

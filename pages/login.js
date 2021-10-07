@@ -5,19 +5,16 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import Footer from "../components/Footer";
 import NavigationBar from "../components/NavigationBar";
 import { AuthContext } from "../shared/context/auth-context";
+import { ToastContainer, toast } from "react-toastify";
 
 const login = () => {
   const router = useRouter();
   const auth = useContext(AuthContext);
-  const [validated, setValidated] = useState(false);
 
-  const loginUser = async (evt) => {
+  const error = () => toast.error("Email or password incorrect");
+
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
-    const form = evt.currentTarget;
-    if (form.checkValidity() === false) {
-      evt.stopPropagation();
-    }
-    setValidated(true);
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/auth`, {
       body: JSON.stringify({
         email: evt.target.email.value,
@@ -28,11 +25,12 @@ const login = () => {
       },
       method: "POST",
     });
+    if (!res.ok) error();
 
     const result = await res.json();
     const { token, userId } = result;
     auth.login(userId, token);
-    return router.push("/books");
+    router.push("/books");
   };
 
   return (
@@ -41,8 +39,9 @@ const login = () => {
       <Container className="min-vh-100">
         <h1 className="mb-5 text-center">Login</h1>
         <Row className="justify-content-center align-items-center" style={{ padding: "0px 12px" }}>
+          <ToastContainer />
           <Col xs lg="4" className="bg-white p-3 rounded">
-            <Form noValidate validated={validated} onSubmit={loginUser}>
+            <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email" placeholder="Enter email" name="email" autoComplete="name" required />

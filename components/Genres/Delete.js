@@ -19,7 +19,7 @@ const Delete = ({ setShowDeleteModal, genre, setShowGenre }) => {
       setShowGenre(false);
     } else {
       setShowDeleteModal(false);
-      console.log(`ERROR: ${result.error}`);
+      console.log(result.error);
     }
   };
 

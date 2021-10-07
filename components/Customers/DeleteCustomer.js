@@ -1,6 +1,6 @@
-import { Modal, Button } from "react-bootstrap";
-import { AuthContext } from "../../shared/context/auth-context";
 import { useContext } from "react";
+import { Button, Modal } from "react-bootstrap";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const DeleteCustomer = ({ setShowDeleteModal, customer, setShowCustomer }) => {
   const auth = useContext(AuthContext);
