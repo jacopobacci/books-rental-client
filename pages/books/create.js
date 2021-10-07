@@ -11,6 +11,9 @@ const create = () => {
   const router = useRouter();
   const [validated, setValidated] = useState(false);
   const [genresData, setGenresData] = useState([]);
+  const [selectedFile, setSelectedFile] = useState();
+
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,9 +35,12 @@ const create = () => {
     }
   }, []);
 
-  const auth = useContext(AuthContext);
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
 
-  const createBook = async (evt) => {
+  const handleSubmit = async (evt) => {
     setValidated(true);
     evt.preventDefault();
     const form = evt.currentTarget;
@@ -42,21 +48,55 @@ const create = () => {
       evt.stopPropagation();
       return;
     }
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`, {
-      body: JSON.stringify({
-        title: evt.target.title.value,
-        author: evt.target.author.value,
-        image: evt.target.image.value,
-        genre: evt.target.genre.value,
-        description: evt.target.description.value,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.token}`,
-      },
-      method: "POST",
-    });
-    router.push("/books");
+
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onloadend = () => {
+        createBook(reader.result);
+      };
+      reader.onerror = () => {
+        console.error("Error");
+      };
+      const createBook = async (base64EncodedImage) => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`, {
+          body: JSON.stringify({
+            title: evt.target.title.value,
+            author: evt.target.author.value,
+            imageUpload: base64EncodedImage,
+            genre: evt.target.genre.value,
+            description: evt.target.description.value,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+          method: "POST",
+        });
+        const result = await res.json();
+        if (result) return router.push("/books");
+      };
+    } else {
+      const createBook = async () => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`, {
+          body: JSON.stringify({
+            title: evt.target.title.value,
+            author: evt.target.author.value,
+            image: evt.target.image.value,
+            genre: evt.target.genre.value,
+            description: evt.target.description.value,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+          method: "POST",
+        });
+        const result = await res.json();
+        if (result) return router.push("/books");
+      };
+      createBook();
+    }
   };
 
   if (!loaded) {
@@ -70,7 +110,7 @@ const create = () => {
         <h1 className="mb-5 text-center">Create new book</h1>
         <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
           <Col xs lg="4" className="bg-white p-3 rounded">
-            <Form noValidate validated={validated} onSubmit={createBook}>
+            <Form noValidate validated={validated} onSubmit={handleSubmit} encType="multipart/form-data">
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="text" placeholder="Enter title" name="title" autoComplete="name" required />
@@ -80,8 +120,12 @@ const create = () => {
                 <Form.Control type="text" placeholder="Enter author name" name="author" autoComplete="name" required />
               </Form.Group>
               <Form.Group className="mb-3" controlId="image">
-                <Form.Label>Image</Form.Label>
-                <Form.Control type="text" placeholder="Enter image url" name="image" autoComplete="name" required />
+                <Form.Label>Choose an image from the web</Form.Label>
+                <Form.Control type="text" placeholder="Enter image url" name="image" autoComplete="name" />
+              </Form.Group>
+              <Form.Group controlId="formFile" className="mb-3" controlId="imageUpload">
+                <Form.Label>Or upload your own</Form.Label>
+                <Form.Control type="file" name="imageUpload" autoComplete="name" onChange={handleFileInputChange} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="genre">
                 <Form.Label>Genre</Form.Label>

@@ -1,4 +1,4 @@
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Spinner } from "react-bootstrap";
 import Book from "../../components/Books/Book";
 import Search from "../../components/Books/Search";
 import Footer from "../../components/Footer";
@@ -10,19 +10,24 @@ const index = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [booksData, setBooksData] = useState([]);
   const [rentalsData, setRentalsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`);
       setBooksData(await res.json());
+      setIsLoading(false);
     };
     fetchData();
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/rentals`);
       setRentalsData(await res.json());
+      setIsLoading(false);
     };
     fetchData();
   }, []);
@@ -33,24 +38,34 @@ const index = () => {
       <Container className="min-vh-100">
         <h1 className="mb-5 text-center">All books</h1>
         <Search setSearchResults={setSearchResults} />
-        {searchResults.error || booksData.error ? (
-          <>
-            <p className="text-center">{searchResults.error || booksData.error}</p>
-            {booksData.error && (
-              <p className="text-center">
-                <Link href="/books/create">Create a book</Link>
-              </p>
-            )}
-          </>
-        ) : searchResults.books ? (
+        {isLoading ? (
           <Row className="justify-content-center">
-            {searchResults.books &&
-              searchResults.books.map((book) => <Book key={book._id} book={book} rentalsData={rentalsData} />)}
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
           </Row>
         ) : (
-          <Row className="justify-content-center">
-            {booksData.books && booksData.books.map((book) => <Book key={book._id} book={book} rentalsData={rentalsData} />)}
-          </Row>
+          <>
+            {searchResults.error || booksData.error ? (
+              <>
+                <p className="text-center">{searchResults.error || booksData.error}</p>
+                {booksData.error && (
+                  <p className="text-center">
+                    <Link href="/books/create">Create a book</Link>
+                  </p>
+                )}
+              </>
+            ) : searchResults.books ? (
+              <Row className="justify-content-center">
+                {searchResults.books &&
+                  searchResults.books.map((book) => <Book key={book._id} book={book} rentalsData={rentalsData} />)}
+              </Row>
+            ) : (
+              <Row className="justify-content-center">
+                {booksData.books && booksData.books.map((book) => <Book key={book._id} book={book} rentalsData={rentalsData} />)}
+              </Row>
+            )}
+          </>
         )}
       </Container>
       <Footer />

@@ -11,6 +11,7 @@ const Update = () => {
   const auth = useContext(AuthContext);
   const { isLoggedIn } = auth;
   const [validated, setValidated] = useState(false);
+  const [selectedFile, setSelectedFile] = useState();
 
   const { bookId } = router.query;
   const [book, setBook] = useState({ title: "", author: "", image: "", genre: "", description: "" });
@@ -39,7 +40,12 @@ const Update = () => {
     getGenres();
   }, []);
 
-  const updateBook = async (evt) => {
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
+
+  const handleSubmit = async (evt) => {
     setValidated(true);
     evt.preventDefault();
     const form = evt.currentTarget;
@@ -47,21 +53,56 @@ const Update = () => {
       evt.stopPropagation();
       return;
     }
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books/${bookId}`, {
-      body: JSON.stringify({
-        title: book.title,
-        author: book.author,
-        image: book.image,
-        genre: book.genre,
-        description: book.description,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.token}`,
-      },
-      method: "PUT",
-    });
-    router.push("/books");
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onloadend = () => {
+        updateBook(reader.result);
+      };
+      reader.onerror = () => {
+        console.error("Error");
+      };
+      const updateBook = async (base64EncodedImage) => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books/${bookId}`, {
+          body: JSON.stringify({
+            title: book.title,
+            author: book.author,
+            imageUpload: base64EncodedImage,
+            genre: book.genre,
+            description: book.description,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+          method: "PUT",
+        });
+        const result = await res.json();
+        if (result) return router.push("/books");
+        router.push("/books");
+      };
+    } else {
+      const updateBook = async () => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books/${bookId}`, {
+          body: JSON.stringify({
+            title: book.title,
+            author: book.author,
+            image: book.image,
+            genre: book.genre,
+            description: book.description,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+          method: "PUT",
+        });
+        const result = await res.json();
+        if (result) return router.push("/books");
+        router.push("/books");
+      };
+      updateBook();
+    }
   };
 
   const handleChange = (evt) => {
@@ -75,7 +116,7 @@ const Update = () => {
       <Container className="min-vh-100">
         <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
           <Col xs lg="4" className="bg-white p-3 rounded">
-            <Form onSubmit={updateBook}>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Title</Form.Label>
                 <Form.Control
@@ -109,8 +150,11 @@ const Update = () => {
                   autoComplete="name"
                   value={book.image}
                   onChange={handleChange}
-                  required
                 />
+              </Form.Group>
+              <Form.Group controlId="formFile" className="mb-3" controlId="imageUpload">
+                <Form.Label>Or upload your own</Form.Label>
+                <Form.Control type="file" name="imageUpload" autoComplete="name" onChange={handleFileInputChange} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="genre">
                 <Form.Label>Genre</Form.Label>
