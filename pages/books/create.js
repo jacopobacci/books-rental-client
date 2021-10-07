@@ -13,6 +13,8 @@ const create = () => {
   const [genresData, setGenresData] = useState([]);
   const [selectedFile, setSelectedFile] = useState();
 
+  const auth = useContext(AuthContext);
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/genres`);
@@ -33,14 +35,12 @@ const create = () => {
     }
   }, []);
 
-  const auth = useContext(AuthContext);
-
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
 
-  const createBook = async (evt) => {
+  const handleSubmit = async (evt) => {
     setValidated(true);
     evt.preventDefault();
     const form = evt.currentTarget;
@@ -53,12 +53,12 @@ const create = () => {
       const reader = new FileReader();
       reader.readAsDataURL(selectedFile);
       reader.onloadend = () => {
-        uploadImage(reader.result);
+        createBook(reader.result);
       };
       reader.onerror = () => {
         console.error("Error");
       };
-      const uploadImage = async (base64EncodedImage) => {
+      const createBook = async (base64EncodedImage) => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`, {
           body: JSON.stringify({
             title: evt.target.title.value,
@@ -77,7 +77,7 @@ const create = () => {
         if (result) return router.push("/books");
       };
     } else {
-      const uploadImage = async () => {
+      const createBook = async () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`, {
           body: JSON.stringify({
             title: evt.target.title.value,
@@ -95,7 +95,7 @@ const create = () => {
         const result = await res.json();
         if (result) return router.push("/books");
       };
-      uploadImage();
+      createBook();
     }
   };
 
@@ -110,7 +110,7 @@ const create = () => {
         <h1 className="mb-5 text-center">Create new book</h1>
         <Row className="justify-content-center align-items-center mb-5" style={{ padding: "0px 12px" }}>
           <Col xs lg="4" className="bg-white p-3 rounded">
-            <Form noValidate validated={validated} onSubmit={createBook} encType="multipart/form-data">
+            <Form noValidate validated={validated} onSubmit={handleSubmit} encType="multipart/form-data">
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="text" placeholder="Enter title" name="title" autoComplete="name" required />

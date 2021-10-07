@@ -17,7 +17,6 @@ const index = () => {
       setIsLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/books`);
       setBooksData(await res.json());
-      console.log(booksData);
       setIsLoading(false);
     };
     fetchData();
